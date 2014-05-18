@@ -1,4 +1,4 @@
-package com.gibhub.fragsforfree.fooddiversity;
+package com.gibhub.fragsforfree.fooddiversity.enums;
 
 public enum MESSAGE {
 	CHECK_MAT("Checking materials from config: %material"),

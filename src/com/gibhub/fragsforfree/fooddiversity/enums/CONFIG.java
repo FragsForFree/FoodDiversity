@@ -1,4 +1,4 @@
-package com.gibhub.fragsforfree.fooddiversity;
+package com.gibhub.fragsforfree.fooddiversity.enums;
 
 import java.util.Arrays;
 import java.util.List;

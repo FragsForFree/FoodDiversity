@@ -1,4 +1,4 @@
-package com.gibhub.fragsforfree.fooddiversity;
+package com.gibhub.fragsforfree.fooddiversity.enums;
 
 public enum STRINGS {
 	MEAT("Meat"),
