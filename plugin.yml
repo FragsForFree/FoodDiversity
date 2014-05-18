@@ -1,0 +1,15 @@
+name: FoodDiversity
+main: com.gibhub.fragsforfree.fooddiversity.fooddiversity
+version: 1.0
+author: FragsForFree
+commands:
+  fooddiversity:
+    description: This are the fooddiversity commands
+    usage: /fooddiversity help
+permissions:
+  fooddiversity.admin:
+    desciption: gives access to all fooddiversity commands.
+    default: op
+  fooddiversity.immun:
+    desciption: the fooddiversity has no effekt.
+    default: false
