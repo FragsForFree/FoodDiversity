@@ -1,6 +1,6 @@
 name: FoodDiversity
 main: com.gibhub.fragsforfree.fooddiversity.fooddiversity
-version: 1.1-Snapshot
+version: 1.1
 author: FragsForFree
 commands:
   fooddiversity:

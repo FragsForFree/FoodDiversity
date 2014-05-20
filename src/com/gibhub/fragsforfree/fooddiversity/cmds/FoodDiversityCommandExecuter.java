@@ -28,28 +28,23 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     	if ((sender instanceof Player && sender.hasPermission(STRINGS.PERM_ADMIN.getString())) || (sender instanceof ConsoleCommandSender)){    		
     		switch(args.length){
     		case 1:
-	    		
-    			switch(args[0].toLowerCase()){
-	    		case "help":
-	    			sender.sendMessage(ChatColor.GREEN + HELP.TITLE.getTip());
+    		
+    			if(args[0].toLowerCase().equalsIgnoreCase("help")){
+    				sender.sendMessage(ChatColor.GREEN + args[0].toLowerCase() + " - " + args.length);	
+ 	    			sender.sendMessage(ChatColor.GREEN + HELP.TITLE.getTip());
 	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_01.getCommand() + ChatColor.WHITE + HELP.LINE_01.getTip());
 	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_02.getCommand() + ChatColor.WHITE + HELP.LINE_02.getTip());
 	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_03.getCommand() + ChatColor.WHITE + HELP.LINE_03.getTip());
 	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_04.getCommand() + ChatColor.WHITE + HELP.LINE_04.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_05.getCommand() + ChatColor.WHITE + HELP.LINE_05.getTip());		    			
-	    			break;
-	    		default:
-	    			return false;
-	    		}
-	    		break;
+	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_05.getCommand() + ChatColor.WHITE + HELP.LINE_05.getTip());
+	    			return true;
+    			}
 	    		
     		case 3:
     			
-    			switch(args[0].toLowerCase()){
-	    		case "set":		
+    			if(args[0].toLowerCase().equalsIgnoreCase("set")){    				    			
 	    			
-	    			switch(args[1].toLowerCase()){
-	    			case "debug":
+	    			if(args[1].toLowerCase().equalsIgnoreCase("debug")){
     					if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")){
     						plugin.getConfig().set(CONFIG.PLUGIN_DEBUG.getPath(), Boolean.valueOf(args[2]));
     						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", args[2]));
@@ -57,43 +52,43 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     					} else {
     						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_BOOLEAN.getMessage());
     					}
-    					break;
-	    			case "fruit":
+    					return true;
+	    			}
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("fruit")){
     					if (isInteger(args[2])){
     						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_FRUIT.getPath(), Integer.parseInt(args[2]));
     						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_FRUIT_CHANGE.getMessage().replace("%args", args[2]));
     						plugin.saveConfig();
     					} else {
     						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}
-    					break;
-	    			case "meat":
+    					}	
+    					return true;
+	    			}
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("meat")){
     					if (isInteger(args[2])){
     						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_MEAT.getPath(), Integer.parseInt(args[2]));
     						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_MEAT_CHANGE.getMessage().replace("%args", args[2]));
     						plugin.saveConfig();
     					} else {
     						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}
-    					break;
-	    			case "spezial":
+    					}	
+    					return true;
+	    			}
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("spezial")){
     					if (isInteger(args[2])){
     						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_SPEZIAL.getPath(), Integer.parseInt(args[2]));
     						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_SPEZIAL_CHANGE.getMessage().replace("%args", args[2]));
     						plugin.saveConfig();
     					} else {
     						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}
-    					break;
-	    			default:
-	    				return false;
-	    			}	    			
-	    			break;
-	    			
-	    		default:
-	    			return false;
-	    		}
-    			break;
+    					}	
+    					return true;
+	    			}
+
+    			}
     			
 	    	default:
 	    		return false;    			

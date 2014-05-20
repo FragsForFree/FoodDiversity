@@ -1,7 +1,7 @@
 package com.gibhub.fragsforfree.fooddiversity.enums;
 
 public enum HELP {
-	TITLE("", "Plugin FoodDiversity v1.1-Snapshot by FragsForFree"),
+	TITLE("", "Plugin FoodDiversity v1.1 by FragsForFree"),
 	LINE_01("/fooddiversity help ", "shows this helppage"),
 	LINE_02("/fooddiversity set debug [true/false] ", "set the debugmodes (default: false)"),
 	LINE_03("/fooddiversity set fruit [integer] ", "set the eaten in row trigger for the type of fruit food"),
