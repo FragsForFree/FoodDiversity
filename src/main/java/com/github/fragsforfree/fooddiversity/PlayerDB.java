@@ -1,4 +1,4 @@
-package com.gibhub.fragsforfree.fooddiversity;
+package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;

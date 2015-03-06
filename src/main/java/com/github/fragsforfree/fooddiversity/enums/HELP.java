@@ -1,4 +1,4 @@
-package com.gibhub.fragsforfree.fooddiversity.enums;
+package com.github.fragsforfree.fooddiversity.enums;
 
 public enum HELP {
 	TITLE("", "Plugin FoodDiversity v1.1 by FragsForFree"),
