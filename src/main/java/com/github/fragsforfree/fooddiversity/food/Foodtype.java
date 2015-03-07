@@ -1,4 +1,4 @@
-package com.github.fragsforfree.fooddiversity.food;
+package main.java.com.github.fragsforfree.fooddiversity.food;
 
 import java.util.List;
 import org.bukkit.Material;

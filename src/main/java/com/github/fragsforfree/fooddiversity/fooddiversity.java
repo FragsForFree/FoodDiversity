@@ -1,4 +1,4 @@
-package com.github.fragsforfree.fooddiversity;
+package main.java.com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,15 +12,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.fragsforfree.fooddiversity.cmds.FoodDiversityCommandExecuter;
-import com.github.fragsforfree.fooddiversity.config.ConfigurationManager;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
-import com.github.fragsforfree.fooddiversity.enums.STRINGS;
-import com.github.fragsforfree.fooddiversity.events.FoodLevelChange;
-import com.github.fragsforfree.fooddiversity.events.PlayerInteract;
-import com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
-import com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
+import main.java.com.github.fragsforfree.fooddiversity.cmds.FoodDiversityCommandExecuter;
+import main.java.com.github.fragsforfree.fooddiversity.config.ConfigurationManager;
+import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import main.java.com.github.fragsforfree.fooddiversity.enums.STRINGS;
+import main.java.com.github.fragsforfree.fooddiversity.events.FoodLevelChange;
+import main.java.com.github.fragsforfree.fooddiversity.events.PlayerInteract;
+import main.java.com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
+import main.java.com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
 
 public class fooddiversity extends JavaPlugin implements Listener {
 

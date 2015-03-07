@@ -1,5 +1,5 @@
 name: FoodDiversity
-main: com.gibhub.fragsforfree.fooddiversity.fooddiversity
+main: main.java.com.github.fragsforfree.fooddiversity.fooddiversity
 version: 1.1.1-SNAPSHOT
 author: FragsForFree
 commands:

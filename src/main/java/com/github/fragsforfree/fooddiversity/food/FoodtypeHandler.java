@@ -1,4 +1,4 @@
-package com.github.fragsforfree.fooddiversity.food;
+package main.java.com.github.fragsforfree.fooddiversity.food;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -6,8 +6,8 @@ import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
-import com.github.fragsforfree.fooddiversity.fooddiversity;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class FoodtypeHandler {
 

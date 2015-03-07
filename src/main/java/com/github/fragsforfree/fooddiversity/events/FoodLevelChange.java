@@ -1,4 +1,4 @@
-package com.github.fragsforfree.fooddiversity.events;
+package main.java.com.github.fragsforfree.fooddiversity.events;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -9,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.github.fragsforfree.fooddiversity.fooddiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class FoodLevelChange implements Listener {
 

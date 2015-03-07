@@ -1,4 +1,4 @@
-package com.github.fragsforfree.fooddiversity.cmds;
+package main.java.com.github.fragsforfree.fooddiversity.cmds;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.fragsforfree.fooddiversity.fooddiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.HELP;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
-import com.github.fragsforfree.fooddiversity.enums.STRINGS;
+import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import main.java.com.github.fragsforfree.fooddiversity.enums.HELP;
+import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import main.java.com.github.fragsforfree.fooddiversity.enums.STRINGS;
 
 public class FoodDiversityCommandExecuter implements CommandExecutor {
 

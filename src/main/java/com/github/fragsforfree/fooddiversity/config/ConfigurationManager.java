@@ -1,16 +1,17 @@
-package com.github.fragsforfree.fooddiversity.config;
+package main.java.com.github.fragsforfree.fooddiversity.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import com.github.fragsforfree.fooddiversity.fooddiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class ConfigurationManager {
 
@@ -42,7 +43,9 @@ public class ConfigurationManager {
     	
     	if(config.getInt(CONFIG.PLUGIN_CONFIGVERSION.getPath()) != CONFIG.PLUGIN_CONFIGVERSION.getInt()){
     		PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
-    	}    	
+    	}
+    	
+    	this.getFoodConfiguration();
     }
     
     /**
@@ -90,6 +93,22 @@ public class ConfigurationManager {
 			}
 		}
 		return listOfStrings;
-    }    
+    }
+    
+    private void getFoodConfiguration() {
+    	Set<String> keys = PLUGIN.getConfig().getKeys(true);
+    	PLUGIN.getLogger().log(Level.INFO, "Start: Lese Konfiguration", "");
+    	for (String key: keys){
+    		if (key.startsWith("Config.ItemsInRow.")) {    		
+    			PLUGIN.getLogger().log(Level.INFO, key);
+    		}
+    		
+    		if (key.startsWith("Config.Items.")) {    		
+    			PLUGIN.getLogger().log(Level.INFO, key);
+    		}
+    	}
+    	PLUGIN.getLogger().log(Level.INFO, "Ende: Lese Konfiguration", "");
+    	
+    }
 	
 }
