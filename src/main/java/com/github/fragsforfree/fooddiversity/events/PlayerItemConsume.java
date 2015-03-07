@@ -1,10 +1,10 @@
-package com.gibhub.fragsforfree.fooddiversity.events;
+package com.github.fragsforfree.fooddiversity.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import com.gibhub.fragsforfree.fooddiversity.fooddiversity;
+import com.github.fragsforfree.fooddiversity.fooddiversity;
 
 public class PlayerItemConsume implements Listener {
 
