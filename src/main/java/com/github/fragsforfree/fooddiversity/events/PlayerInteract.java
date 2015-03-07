@@ -11,17 +11,17 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
 import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class PlayerInteract implements Listener {
 
-	private fooddiversity plugin;
+	private FoodDiversity plugin;
 	private World world;
 	private Location loc;
 
-	public PlayerInteract(fooddiversity plugin){
+	public PlayerInteract(FoodDiversity plugin){
 		this.plugin = plugin;
 	}	
 	

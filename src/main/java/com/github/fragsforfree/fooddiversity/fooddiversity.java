@@ -20,22 +20,30 @@ import main.java.com.github.fragsforfree.fooddiversity.enums.STRINGS;
 import main.java.com.github.fragsforfree.fooddiversity.events.FoodLevelChange;
 import main.java.com.github.fragsforfree.fooddiversity.events.PlayerInteract;
 import main.java.com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
+import main.java.com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import main.java.com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
 
-public class fooddiversity extends JavaPlugin implements Listener {
+public class FoodDiversity extends JavaPlugin implements Listener {
 
 	public PlayerDB playerDB;
 	private ConfigurationManager configManager;
+	public FoodtypeHandler foodtypeHandler;
 	
 	/**
 	 * standard onEnable method
 	 */
     public void onEnable(){ 
-    	configManager = new ConfigurationManager(this);
+    	foodtypeHandler = new FoodtypeHandler(this);
+    	configManager = new ConfigurationManager(this, this);
     	configManager.initialiseConfig(); 
-    	configManager.checkConfigItems();
     	initialisePlayerDB();
     	addMetrics();
+    	
+    	//test in live minecraft - yeah, the foodtypehandler works!
+    	String foodtypename = foodtypeHandler.getfoodtypename("COOKED_BEEF");
+    	this.getLogger().log(Level.INFO, "TEST: COOKED_BEEF is member of " + foodtypename);
+    	int maxeateninrow = foodtypeHandler.getmaxeateninrowfromfoodtype(foodtypename);
+    	this.getLogger().log(Level.INFO, "TEST: ItemInRow '" + foodtypename + "' = " + maxeateninrow);
     	
     	PluginManager pm = getServer().getPluginManager();
     	pm.registerEvents(new FoodLevelChange(this),  this);

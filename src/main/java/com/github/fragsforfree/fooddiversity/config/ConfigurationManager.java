@@ -1,24 +1,24 @@
 package main.java.com.github.fragsforfree.fooddiversity.config;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
 import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class ConfigurationManager {
 
 	private final Plugin PLUGIN;
+	private FoodDiversity cFooddiversity;
 	
-	public ConfigurationManager(fooddiversity instance) {
+	public ConfigurationManager(Plugin instance, FoodDiversity _fooddiversity) {
 		this.PLUGIN = instance;
+		this.cFooddiversity = _fooddiversity;
 	}
 	
     /**
@@ -49,66 +49,27 @@ public class ConfigurationManager {
     }
     
     /**
-     * check the materiallist in the main config file. 
-     * throw a warning, if a entry is not a valid material
+     *  get the foodtype-configuration and give each one to the foodtypehandler
      */
-    public void checkConfigItems(){		    	
-    	List<String> listOfMeat = PLUGIN.getConfig().getStringList(CONFIG.CONFIG_ITEMS_MEAT.getPath());
-		List<String> listOfFruit = PLUGIN.getConfig().getStringList(CONFIG.CONFIG_ITEMS_FRUIT.getPath());
-		List<String> listOfSpezial = PLUGIN.getConfig().getStringList(CONFIG.CONFIG_ITEMS_SPEZIAL.getPath());		
-		List<String> listOfStrings = new ArrayList<String>();
-		
-		listOfStrings = this.checkItemEntries(listOfMeat, listOfStrings);
-		listOfStrings = this.checkItemEntries(listOfFruit, listOfStrings);
-		listOfStrings = this.checkItemEntries(listOfSpezial, listOfStrings);
-		
-		for (String string: listOfStrings)
-		{
-			try{
-				Material.valueOf(string);
-				if (PLUGIN.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-					PLUGIN.getLogger().log(Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", string));
-				}				
-			} catch (Exception ex) {
-				PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", string));
-			}							
-		}				
-    }  
-    
-    /**
-     * put the content of listOfTypes in the listOfStrings Lists
-     * checks if the material is already in the listOfStrings
-     * throw a warning, if there is a material count more than once
-     * 
-     * @param listOfTypes - foodtype-list of material
-     * @param listOfStrings - whole list of material 
-     * @return listOfStrings - used later on method checkConfigItems()
-     */
-    private List<String> checkItemEntries(List<String> listOfTypes, List<String> listOfStrings){
-		for (String string: listOfTypes){			
-			if(listOfStrings.contains(string) && (!listOfStrings.isEmpty())){
-				PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_COUNT.getMessage().replace("%material", string));				
-			} else {
-			listOfStrings.add(string);
-			}
-		}
-		return listOfStrings;
-    }
-    
     private void getFoodConfiguration() {
+    	int itemInRow;
     	Set<String> keys = PLUGIN.getConfig().getKeys(true);
-    	PLUGIN.getLogger().log(Level.INFO, "Start: Lese Konfiguration", "");
     	for (String key: keys){
-    		if (key.startsWith("Config.ItemsInRow.")) {    		
-    			PLUGIN.getLogger().log(Level.INFO, key);
+    		    		
+    		if (key.startsWith("Config.Items.")) {    		    			
+    			String foodtype = key.replace("Config.Items.", "");    			
+    			try {
+    				itemInRow = PLUGIN.getConfig().getInt("Config.ItemsInRow." + foodtype);
+    			}
+    			catch (Exception  ex)
+    			{
+    				PLUGIN.getLogger().log(Level.WARNING, "configuration failure under 'Config.ItemsInRow." + foodtype +"', use defaultvalue '3'");
+    				itemInRow = 3;
+    			}
+    			List<String> listOfFood = PLUGIN.getConfig().getStringList(key);
+    			this.cFooddiversity.foodtypeHandler.addFoodtype(foodtype, listOfFood, itemInRow);    			
     		}
-    		
-    		if (key.startsWith("Config.Items.")) {    		
-    			PLUGIN.getLogger().log(Level.INFO, key);
-    		}
-    	}
-    	PLUGIN.getLogger().log(Level.INFO, "Ende: Lese Konfiguration", "");
-    	
+    	} 	
     }
 	
 }

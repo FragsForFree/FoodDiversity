@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
 import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import main.java.com.github.fragsforfree.fooddiversity.enums.HELP;
 import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
@@ -15,9 +15,9 @@ import main.java.com.github.fragsforfree.fooddiversity.enums.STRINGS;
 
 public class FoodDiversityCommandExecuter implements CommandExecutor {
 
-	private fooddiversity plugin;
+	private FoodDiversity plugin;
 	
-	public FoodDiversityCommandExecuter(fooddiversity plugin) {
+	public FoodDiversityCommandExecuter(FoodDiversity plugin) {
 		this.plugin = plugin;
 	}
 	

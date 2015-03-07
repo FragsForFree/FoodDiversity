@@ -16,7 +16,7 @@ public class PlayerDB {
 	private FileConfiguration config;
 	private File configFile;
 	
-	public PlayerDB(String filename, fooddiversity instance){
+	public PlayerDB(String filename, FoodDiversity instance){
 		if(!filename.endsWith(".yml")){
 			filename += ".yml";
 		}
@@ -30,7 +30,7 @@ public class PlayerDB {
 		
 	}
 	
-	public PlayerDB(File folder, String filename, fooddiversity instance){
+	public PlayerDB(File folder, String filename, FoodDiversity instance){
 		if(!filename.endsWith(".yml")){
 			filename += ".yml";
 		}

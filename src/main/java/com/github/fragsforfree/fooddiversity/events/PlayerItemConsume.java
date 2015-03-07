@@ -4,13 +4,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import main.java.com.github.fragsforfree.fooddiversity.fooddiversity;
+import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
 
 public class PlayerItemConsume implements Listener {
 
-	private fooddiversity plugin;
+	private FoodDiversity plugin;
 
-	public PlayerItemConsume(fooddiversity plugin){
+	public PlayerItemConsume(FoodDiversity plugin){
 		this.plugin = plugin;
 	}		
 	
