@@ -22,7 +22,7 @@ import com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
 import com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
 
-public class FoodDiversity extends JavaPlugin implements Listener {
+public class CopyOfFoodDiversity extends JavaPlugin implements Listener {
 
 	public PlayerDB playerDB;
 	private ConfigurationManager configManager;
