@@ -1,10 +1,10 @@
-package main.java.com.github.fragsforfree.fooddiversity.events;
+package com.github.fragsforfree.fooddiversity.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
+import com.github.fragsforfree.fooddiversity.FoodDiversity;
 
 public class PlayerItemConsume implements Listener {
 

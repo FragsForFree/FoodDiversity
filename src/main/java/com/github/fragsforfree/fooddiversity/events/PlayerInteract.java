@@ -1,4 +1,4 @@
-package main.java.com.github.fragsforfree.fooddiversity.events;
+package com.github.fragsforfree.fooddiversity.events;
 
 import java.util.logging.Level;
 
@@ -11,9 +11,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
-import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.FoodDiversity;
+import com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class PlayerInteract implements Listener {
 

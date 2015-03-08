@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package main.java.com.github.fragsforfree.fooddiversity.mcstat;
+package com.github.fragsforfree.fooddiversity.mcstat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

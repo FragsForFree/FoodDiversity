@@ -1,4 +1,4 @@
-package main.java.com.github.fragsforfree.fooddiversity.food;
+package com.github.fragsforfree.fooddiversity.food;
 
 import java.util.List;
 import java.util.ArrayList;

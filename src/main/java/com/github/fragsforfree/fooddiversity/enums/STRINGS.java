@@ -1,4 +1,4 @@
-package main.java.com.github.fragsforfree.fooddiversity.enums;
+package com.github.fragsforfree.fooddiversity.enums;
 
 public enum STRINGS {
 	MEAT("Meat"),

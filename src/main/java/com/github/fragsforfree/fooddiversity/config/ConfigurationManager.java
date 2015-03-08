@@ -1,4 +1,4 @@
-package main.java.com.github.fragsforfree.fooddiversity.config;
+package com.github.fragsforfree.fooddiversity.config;
 
 import java.util.List;
 import java.util.Set;
@@ -7,9 +7,9 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import main.java.com.github.fragsforfree.fooddiversity.FoodDiversity;
-import main.java.com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import main.java.com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.FoodDiversity;
+import com.github.fragsforfree.fooddiversity.enums.CONFIG;
+import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 
 public class ConfigurationManager {
 
