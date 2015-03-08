@@ -2,7 +2,6 @@ package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -34,16 +33,9 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	 */
     public void onEnable(){ 
     	foodtypeHandler = new FoodtypeHandler(this);
-    	configManager = new ConfigurationManager(this, this);
-    	configManager.initialiseConfig(); 
+    	configManager = new ConfigurationManager(this, this); 
     	initialisePlayerDB();
-    	addMetrics();
-    	
-    	//test in live minecraft - yeah, the foodtypehandler works!
-    	String foodtypename = foodtypeHandler.getfoodtypename("COOKED_BEEF");
-    	this.getLogger().log(Level.INFO, "TEST: COOKED_BEEF is member of " + foodtypename);
-    	int maxeateninrow = foodtypeHandler.getmaxeateninrowfromfoodtype(foodtypename);
-    	this.getLogger().log(Level.INFO, "TEST: ItemInRow '" + foodtypename + "' = " + maxeateninrow);
+    	addMetrics();    	
     	
     	PluginManager pm = getServer().getPluginManager();
     	pm.registerEvents(new FoodLevelChange(this),  this);
@@ -89,16 +81,8 @@ public class FoodDiversity extends JavaPlugin implements Listener {
      * @return - a string of foodtype
      */
     private String getFoodtype(ItemStack item){	
-		String itemstring = item.getType().toString();
-		
-		List<String> listOfMeat = getConfig().getStringList(CONFIG.CONFIG_ITEMS_MEAT.getPath());
-		List<String> listOfFruit = getConfig().getStringList(CONFIG.CONFIG_ITEMS_FRUIT.getPath());
-		List<String> listOfSpezial = getConfig().getStringList(CONFIG.CONFIG_ITEMS_SPEZIAL.getPath());
-		
-		if(isListvalue(itemstring, listOfMeat, STRINGS.MEAT.getString())){return STRINGS.MEAT.getString();}
-		if(isListvalue(itemstring, listOfFruit, STRINGS.FRUIT.getString())){return STRINGS.FRUIT.getString();}
-		if(isListvalue(itemstring, listOfSpezial, STRINGS.SPEZIAL.getString())){return STRINGS.SPEZIAL.getString();}
-		return STRINGS.NONFOOD.getString();
+		String itemstring = item.getType().toString();		
+		return this.foodtypeHandler.getfoodtypename(itemstring);
 	}
     
     /**
@@ -115,32 +99,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     		return true;
     	}
     	return false;
-    }
-    
-    /**
-     * search the material in the main config
-     * 
-     * @param itemstring - item(material) to search
-     * @param listOfStrings - foodtype-list of material
-     * @param type - foodtype to search
-     * @return [true/false]
-     */
-    private boolean isListvalue(String itemstring, List<String> listOfStrings, String type){
-		for (String string: listOfStrings)
-		{
-			if(string.equals(itemstring)){
-	    		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-	    			this.getLogger().log(Level.INFO, MESSAGE.FOUND_ITEM_VIA_CONFIGFILE.getMessage().replace("%item", itemstring).replace("%type", type));
-	    		}				
-				return true;
-			};
-		}
-		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-			this.getLogger().log(Level.INFO, MESSAGE.NOT_FOUND_ITEM_VIA_CONFIGFILE.getMessage().replace("%item", itemstring).replace("%type", type));
-		}	
-		return false;    	
-    }    
-            
+    }           
 	
 	/**
 	 * main check for the blocking of consume
@@ -156,12 +115,12 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	if (!player.hasPermission(STRINGS.PERM_IMMUN.getString())){    		    	
     		type = this.getFoodtype(item);	    	
 	 
-	    	if(type != STRINGS.NONFOOD.getString()){
+	    	if(type != null){
 		    	playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.isCake(item));
 	    		
 	    		String eatentype = playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath());
 	    		int eaten = playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath());
-		    	if(eaten >= getConfig().getInt(CONFIG.CONFIG_ITEMSINROW.getPath() + type) && type.equals(eatentype)){    		
+		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
 		    		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
 		    			this.getLogger().log(Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype)); 
 		    		}	    		

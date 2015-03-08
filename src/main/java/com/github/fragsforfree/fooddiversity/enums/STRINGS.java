@@ -4,7 +4,6 @@ public enum STRINGS {
 	MEAT("Meat"),
 	FRUIT("Fruit"),
 	SPEZIAL("Spezial"),
-	NONFOOD("nonFood"),
 	PERM_ADMIN("fooddiversity.admin"),
 	PERM_IMMUN("fooddiversity.immun"),
 	CMD("fooddiversity");
