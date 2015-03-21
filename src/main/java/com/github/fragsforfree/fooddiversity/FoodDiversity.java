@@ -2,16 +2,19 @@ package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.fragsforfree.fooddiversity.cmds.FoodDiversityCommandExecuter;
+import com.github.fragsforfree.fooddiversity.command.FoodDiversityCommandExecuter;
 import com.github.fragsforfree.fooddiversity.config.ConfigurationManager;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
@@ -21,19 +24,30 @@ import com.github.fragsforfree.fooddiversity.events.PlayerInteract;
 import com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
 import com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 
 public class FoodDiversity extends JavaPlugin implements Listener {
 
 	public PlayerDB playerDB;
 	private ConfigurationManager configManager;
 	public FoodtypeHandler foodtypeHandler;
+	private boolean debug;
+	
+	private void setDebug(boolean value){
+		this.debug = value;
+	}
+	
+	public boolean getDebug(){
+		return this.debug;
+	}
 	
 	/**
 	 * standard onEnable method
 	 */
     public void onEnable(){ 
     	foodtypeHandler = new FoodtypeHandler(this);
-    	configManager = new ConfigurationManager(this, this); 
+    	configManager = new ConfigurationManager(this, this);
+    	this.getConfigDebug();
     	initialisePlayerDB();
     	addMetrics();    	
     	
@@ -149,6 +163,75 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     			this.getLogger().log(Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name));
     		}  		
     	}
-    }            
+    }   
+    
+    private void getConfigDebug(){
+    	this.setDebug(this.configManager.getDebug());
+    }
+    
+    public void setConfigDebug(CommandSender sender, String value){
+    	if ((value.toLowerCase().equalsIgnoreCase("true") || 
+    			value.toLowerCase().equalsIgnoreCase("false"))){
+    		this.configManager.setDebug(sender, Boolean.valueOf(value));
+    		this.setDebug(Boolean.valueOf(value));
+    	}
+    	else
+    	{
+        	if (sender instanceof ConsoleCommandSender){
+        		MessageHandler.sendConsole(this, Level.INFO, MESSAGE.EXPECT_BOOLEAN.getMessage());
+        	}
+        	if (sender instanceof Player){
+        		MessageHandler.sendPlayerMessage((Player) sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
+        	}
+    	}
+    }
+    
+    public void listFoodtypes(CommandSender sender){
+    	String list = "";
+    	list = this.foodtypeHandler.getListFoodtypes();
+    	if (sender instanceof ConsoleCommandSender){
+    		MessageHandler.sendConsole(this, Level.INFO, "loaded foodtypes: " + list);
+    	}
+    	if (sender instanceof Player){
+    		MessageHandler.sendPlayerMessage((Player) sender, "loaded foodtypes: " + list, true);
+    	}    	
+    }
+    
+    public void listFood(CommandSender sender, String foodtype){
+    	String list = "";
+    	if(this.foodtypeHandler.getfoodtypename(foodtype) != null){
+	    	list = this.foodtypeHandler.getListFood(foodtype);    	
+	    	if (sender instanceof ConsoleCommandSender){
+	    		MessageHandler.sendConsole(this, Level.INFO, "food of " + foodtype.toUpperCase() + ": " + list);
+	    	}
+	    	if (sender instanceof Player){
+	    		MessageHandler.sendPlayerMessage((Player) sender, "food of " + foodtype.toUpperCase() + ": " + list, true);
+	    	}      		    		
+    	}
+    	else
+    	{
+	    	if (sender instanceof ConsoleCommandSender){
+	    		MessageHandler.sendConsole(this, Level.INFO, "unknown foodtype: " + foodtype);
+	    	}
+	    	if (sender instanceof Player){
+	    		MessageHandler.sendPlayerMessage((Player) sender, "unknown foodtype: " + foodtype, true);
+	    	}   		
+    	}
+    }
+    
+    public void addFoodtype(CommandSender sender, String foodtype, List<String> food, int itemInRow){
+    	if (this.configManager.addFoodtype(foodtype, food, itemInRow)){
+    		this.foodtypeHandler.addFoodtype(foodtype, food, itemInRow);
+    	}
+    	else
+    	{
+	    	if (sender instanceof ConsoleCommandSender){
+	    		MessageHandler.sendConsole(this, Level.INFO, "failed to add foodtype (config)");
+	    	}
+	    	if (sender instanceof Player){
+	    		MessageHandler.sendPlayerMessage((Player) sender, "failed to add foodtype (config)", true);
+	    	}     		
+    	}
+    }
     
 }

@@ -1,4 +1,7 @@
-package com.github.fragsforfree.fooddiversity.cmds;
+package com.github.fragsforfree.fooddiversity.command;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.HELP;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 import com.github.fragsforfree.fooddiversity.enums.STRINGS;
 
@@ -27,31 +29,33 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 
     	if ((sender instanceof Player && sender.hasPermission(STRINGS.PERM_ADMIN.getString())) || (sender instanceof ConsoleCommandSender)){    		
     		switch(args.length){
-    		case 1:
-    		
-    			if(args[0].toLowerCase().equalsIgnoreCase("help")){
-    				sender.sendMessage(ChatColor.GREEN + args[0].toLowerCase() + " - " + args.length);	
- 	    			sender.sendMessage(ChatColor.GREEN + HELP.TITLE.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_01.getCommand() + ChatColor.WHITE + HELP.LINE_01.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_02.getCommand() + ChatColor.WHITE + HELP.LINE_02.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_03.getCommand() + ChatColor.WHITE + HELP.LINE_03.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_04.getCommand() + ChatColor.WHITE + HELP.LINE_04.getTip());
-	    			sender.sendMessage(ChatColor.GOLD + HELP.LINE_05.getCommand() + ChatColor.WHITE + HELP.LINE_05.getTip());
-	    			return true;
+ 	    		
+    		case 2:
+    			
+    			if(args[0].toLowerCase().equalsIgnoreCase("list")){
+    				
+    				if(args[1].toLowerCase().equalsIgnoreCase("foodtypes")){
+    					this.plugin.listFoodtypes(sender);
+    					return true;
+    				}
+    				
     			}
-	    		
+    		
     		case 3:
+    			
+    			if(args[0].toLowerCase().equalsIgnoreCase("list")){
+    				
+    				if(args[1].toLowerCase().equalsIgnoreCase("food")){
+    					this.plugin.listFood(sender, args[2]);			
+    					return true;
+    				}
+    				
+    			}
     			
     			if(args[0].toLowerCase().equalsIgnoreCase("set")){    				    			
 	    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("debug")){
-    					if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")){
-    						plugin.getConfig().set(CONFIG.PLUGIN_DEBUG.getPath(), Boolean.valueOf(args[2]));
-    						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", args[2]));
-    						plugin.saveConfig();
-    					} else {
-    						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_BOOLEAN.getMessage());
-    					}
+    					this.plugin.setConfigDebug(sender, args[2]);
     					return true;
 	    			}
 	    			
@@ -90,13 +94,28 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 
     			}
     			
-	    	default:
-	    		return false;    			
+    			this.sendHelp(sender);
+    			return true;
+    		
+    		case 4:
+    			
+	    		if(args[0].toLowerCase().equalsIgnoreCase("add")){    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("foodtype")){	    					    				
+	    				if(this.isInteger(args[3])){
+	    					List<String> list = Arrays.asList(args[4].split(";").toString().toUpperCase());
+	    					this.plugin.addFoodtype(sender, args[2], list,  Integer.valueOf(args[3]));
+	    				}    				
+	    			}	    			
+	    		}
+    			
+	    	default:	    			    		
+	    		this.sendHelp(sender);
+	    		return true;    			
     		}
 
     	}   	
     	
-    	return true;		
+    	return false;		
 	}
 	
     /**
@@ -112,6 +131,21 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 		} catch (NumberFormatException ex) {
 			return false;
 		}
-	}	
+	}
+    
+    private void sendHelp(CommandSender sender){
+		
+    	if (sender.hasPermission(STRINGS.PERM_ADMIN.getString()) || (sender instanceof ConsoleCommandSender)){	
+			sender.sendMessage(ChatColor.GREEN + EnumCommandhelp.TITLE.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Help.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Help.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Debug.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Debug.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Foodtypes.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Food.getTip());			
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_03.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_03.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_04.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_04.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_05.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_05.getTip());
+    	}
+    	
+    }
 
 }

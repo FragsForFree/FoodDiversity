@@ -68,7 +68,7 @@ public class FoodtypeHandler {
 	 * @param _name - name to search and read
 	 * @return foodtypeobject
 	 */
-	private Foodtype getfoodtype(String _name) {
+	public Foodtype getfoodtype(String _name) {
 		for (Foodtype _foodtype: Foodtypes){			
 			if (_foodtype.getname() == _name) {
 				return _foodtype;
@@ -123,6 +123,19 @@ public class FoodtypeHandler {
 			PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", _food));
 		}
 		return null;
+	}
+	
+	public String getListFoodtypes(){
+		String list = "";
+		for (Foodtype _foodtype: Foodtypes){
+			list = list + _foodtype.getname() + " | ";
+		}	
+		return list;
+	}
+	
+	public String getListFood(String _name){
+		Foodtype _foodtype = this.getfoodtype(_name);
+		return _foodtype.getFoodList();		
 	}
 	
 }

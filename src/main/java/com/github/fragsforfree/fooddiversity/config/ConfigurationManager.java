@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 
 public class ConfigurationManager {
 
@@ -73,5 +77,34 @@ public class ConfigurationManager {
     		}
     	} 	
     }
+    
+    public boolean getDebug(){
+    	return this.PLUGIN.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath());
+    }
+    
+    public void setDebug(CommandSender sender, boolean value){
+    	this.PLUGIN.getConfig().set(CONFIG.PLUGIN_DEBUG.getPath(), value);    	
+    	this.PLUGIN.saveConfig();
+    	if (sender instanceof ConsoleCommandSender){
+    		MessageHandler.sendConsole(PLUGIN, Level.INFO, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)));
+    	}
+    	if (sender instanceof Player){
+    		MessageHandler.sendPlayerMessage((Player) sender, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
+    	}
+    }
 	
+    public boolean addFoodtype(String foodtype, List<String> food, int itemInRow){
+    	boolean result = false;
+    	if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
+    			!this.PLUGIN.getConfig().contains("Config.ItemsInRow." + foodtype)){
+    		this.PLUGIN.getConfig().createSection("Config.Items." + foodtype);
+    		this.PLUGIN.getConfig().set("Config.Items." + foodtype, food);
+    		this.PLUGIN.getConfig().createSection("Config.ItemsInRow." + foodtype);    		
+    		this.PLUGIN.getConfig().set("Config.ItemsInRow." + foodtype, itemInRow);
+    		this.PLUGIN.saveConfig();
+    		result = true;
+    	}    	
+    	return result;
+    }
+    
 }
