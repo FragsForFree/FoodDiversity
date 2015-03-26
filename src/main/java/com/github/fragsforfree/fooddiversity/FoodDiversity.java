@@ -193,19 +193,19 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     		MessageHandler.sendConsole(this, Level.INFO, "loaded foodtypes: " + list);
     	}
     	if (sender instanceof Player){
-    		MessageHandler.sendPlayerMessage((Player) sender, "loaded foodtypes: " + list, true);
+    		MessageHandler.sendPlayerMessage((Player) sender, "loaded foodtypes: " + list, false);
     	}    	
     }
     
     public void listFood(CommandSender sender, String foodtype){
     	String list = "";
-    	if(this.foodtypeHandler.getfoodtypename(foodtype) != null){
-	    	list = this.foodtypeHandler.getListFood(foodtype);    	
+    	if(this.foodtypeHandler.getfoodtype(foodtype) != null){
+	    	list = this.foodtypeHandler.getListFood(foodtype);
 	    	if (sender instanceof ConsoleCommandSender){
 	    		MessageHandler.sendConsole(this, Level.INFO, "food of " + foodtype.toUpperCase() + ": " + list);
 	    	}
 	    	if (sender instanceof Player){
-	    		MessageHandler.sendPlayerMessage((Player) sender, "food of " + foodtype.toUpperCase() + ": " + list, true);
+	    		MessageHandler.sendPlayerMessage((Player) sender, "food of " + foodtype.toUpperCase() + ": " + list, false);
 	    	}      		    		
     	}
     	else
