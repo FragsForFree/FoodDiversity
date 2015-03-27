@@ -17,13 +17,13 @@ import com.github.fragsforfree.fooddiversity.command.FoodDiversityCommandExecute
 import com.github.fragsforfree.fooddiversity.config.ConfigurationManager;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
-import com.github.fragsforfree.fooddiversity.enums.STRINGS;
 import com.github.fragsforfree.fooddiversity.events.FoodLevelChange;
 import com.github.fragsforfree.fooddiversity.events.PlayerInteract;
 import com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
 import com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
 import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
+import com.github.fragsforfree.fooddiversity.permission.EnumPermissions;
 
 public class FoodDiversity extends JavaPlugin implements Listener {
 
@@ -56,7 +56,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	pm.registerEvents(new PlayerInteract(this),  this);
     	pm.registerEvents(new PlayerItemConsume(this),  this);
         
-        getCommand(STRINGS.CMD.getString().toLowerCase()).setExecutor(new FoodDiversityCommandExecuter(this));
+        getCommand(this.getName().toLowerCase()).setExecutor(new FoodDiversityCommandExecuter(this));
     }
 
     /**
@@ -122,7 +122,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	String type;    	
     	String uuid = player.getUniqueId().toString();
     	String name = player.getName(); 	
-    	if (!player.hasPermission(STRINGS.PERM_IMMUN.getString())){    		    	
+    	if (!player.hasPermission(EnumPermissions.FoodDiversityImmun.getString())){    		    	
     		type = this.getFoodtype(item);	    	
 	 
 	    	if(type != null){

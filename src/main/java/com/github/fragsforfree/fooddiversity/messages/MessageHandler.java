@@ -8,12 +8,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.github.fragsforfree.fooddiversity.command.EnumCommandhelp;
-
 public final class MessageHandler {
 
-	private MessageHandler(){
-		 
+	private MessageHandler(){		 
 	}
 	
 	public static void sendMessage(Plugin plugin, CommandSender sender, String Message, boolean Error){
@@ -21,7 +18,7 @@ public final class MessageHandler {
     		MessageHandler.sendConsole(plugin, Level.INFO, Message);
     	}
     	if (sender instanceof Player){
-    		MessageHandler.sendPlayerMessage((Player) sender, Message, false);
+    		MessageHandler.sendPlayerMessage((Player) sender, Message, plugin.getName(), Error);
     	} 
 	}
 	
@@ -35,8 +32,8 @@ public final class MessageHandler {
 		}
 	}
 	
-	public static void sendPlayerMessage(Player player, String Message, boolean Error){
-		String chatmessage = ChatColor.GOLD + "[" + ChatColor.GREEN + "FoodDiversity" + ChatColor.GOLD + "] "; 
+	public static void sendPlayerMessage(Player player, String Message, String Pluginname, boolean Error){
+		String chatmessage = ChatColor.GOLD + "[" + ChatColor.GREEN + Pluginname + ChatColor.GOLD + "] "; 
 	    if (Error == true){
 	    	chatmessage = chatmessage + ChatColor.RED + "ERROR ";
 	    }
@@ -44,10 +41,8 @@ public final class MessageHandler {
 		player.sendMessage(chatmessage);		
 	}
 	
-	public static void sendCommandHelp(Player player, String line){
-		if (EnumCommandhelp.valueOf(line) != null){		
-			player.sendMessage(ChatColor.GOLD + EnumCommandhelp.valueOf(line).getCommand() + ChatColor.WHITE + EnumCommandhelp.valueOf(line).getTip());
-		}
+	public static void sendCommandHelp(Player player, String Command, String Tip){
+			player.sendMessage(ChatColor.GOLD + Command + ChatColor.WHITE + Tip);
 	}
 	
 }

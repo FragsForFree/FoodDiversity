@@ -48,7 +48,7 @@ public class FoodLevelChange implements Listener {
 		    		player.updateInventory();	    			
 	    		}	    			    		
 	        	
-	        	MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())), true);
+	        	MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())), plugin.getName(), true);
 	    		//player.sendMessage(ChatColor.RED + (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())));	        	
 	    		event.setCancelled(true); 	    			    		
 	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getDebug());	        		

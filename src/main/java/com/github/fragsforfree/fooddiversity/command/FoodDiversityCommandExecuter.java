@@ -11,7 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
-import com.github.fragsforfree.fooddiversity.enums.STRINGS;
+import com.github.fragsforfree.fooddiversity.permission.EnumPermissions;
 
 public class FoodDiversityCommandExecuter implements CommandExecutor {
 
@@ -25,7 +25,7 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label,
 			String[] args) {
 
-    	if ((sender instanceof Player && sender.hasPermission(STRINGS.PERM_ADMIN.getString())) || (sender instanceof ConsoleCommandSender)){    		
+    	if ((sender instanceof Player && sender.hasPermission(EnumPermissions.FoodDiversityAdmin.getString())) || (sender instanceof ConsoleCommandSender)){    		
     		switch(args.length){
  	    		
     		case 2:
@@ -126,7 +126,7 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     
     private void sendHelp(CommandSender sender){
 		
-    	if (sender.hasPermission(STRINGS.PERM_ADMIN.getString()) || (sender instanceof ConsoleCommandSender)){	
+    	if (sender.hasPermission(EnumPermissions.FoodDiversityAdmin.getString()) || (sender instanceof ConsoleCommandSender)){	
 			sender.sendMessage(ChatColor.GREEN + EnumCommandhelp.TITLE.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Help.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Help.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Debug.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Debug.getTip());
