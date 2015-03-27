@@ -97,5 +97,47 @@ public class ConfigurationManager {
     	}    	
     	return result;
     }
+
+	public boolean removeFoodtype(String foodtype) {
+		boolean result = false;
+		if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
+    			!this.PLUGIN.getConfig().contains("Config.ItemsInRow." + foodtype)){
+			this.PLUGIN.getConfig().set("Config.Items." + foodtype, null);
+			this.PLUGIN.getConfig().set("Config.ItemsInRow." + foodtype, null); 
+		}
+		return result;
+	}
+
+	public boolean addFood(String food, String foodtype) {
+		boolean result = false;
+		List<String> foodData;
+		if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
+    			!this.PLUGIN.getConfig().contains("Config.ItemsInRow." + foodtype)){
+			foodData = (List<String>) this.PLUGIN.getConfig().getList("Config.Items." + foodtype);
+			foodData.add(food);
+			this.PLUGIN.getConfig().set("Config.Items." + foodtype, foodData);
+		}
+		return result;
+	}
+
+	public boolean removeFood(String food, String foodtype) {
+		boolean result = false;
+		List<String> foodData;
+		if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
+    			!this.PLUGIN.getConfig().contains("Config.ItemsInRow." + foodtype)){
+			foodData = (List<String>) this.PLUGIN.getConfig().getList("Config.Items." + foodtype);
+			foodData.remove(foodData.indexOf(food));
+			this.PLUGIN.getConfig().set("Config.Items." + foodtype, foodData);
+		}		
+		return result;
+	}
+
+	public boolean setItemInRow(String foodtype, Integer iteminrow) {
+		boolean result = false;
+		if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
+    			!this.PLUGIN.getConfig().contains("Config.ItemsInRow." + foodtype))
+			this.PLUGIN.getConfig().set("Config.ItemsInRow." + foodtype, iteminrow);
+		return result;
+	}
     
 }

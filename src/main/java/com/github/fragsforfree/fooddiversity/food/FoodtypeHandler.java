@@ -50,15 +50,6 @@ public class FoodtypeHandler {
 		}					
 	}
 
-	/**
-	private void addFood (String _foodtypename, String _food) {
-		Foodtype _foodtype = getfoodtype(_foodtypename);		
-		if (_foodtype != null) {
-			Material _material = this.getMaterial(_food);
-			if (_material != null) {_foodtype.addfood(_material);}	
-		}
-	}
-	*/
 
 	/**
 	 * get the foodtypeobject from a foodtypename
@@ -133,6 +124,25 @@ public class FoodtypeHandler {
 	public String getListFood(String _name){
 		Foodtype _foodtype = this.getfoodtype(_name);
 		return _foodtype.getFoodList();		
+	}
+
+	public void removeFoodtype(String foodtype) {
+		for (Foodtype _foodtype: Foodtypes){
+			if (_foodtype.getname().equalsIgnoreCase(foodtype)){ Foodtypes.remove(_foodtype);}
+		}
+		
+	}
+
+	public void addFood(Material food, String foodtype) {
+		this.getfoodtype(foodtype).addfood(food);		
+	}
+
+	public void removeFood(Material food, String foodtype) {
+		this.getfoodtype(foodtype).removefood(food);		
+	}
+
+	public void setItemInRow(String foodtype, Integer _maxeateninrow) {
+		this.getfoodtype(foodtype).setmaxeateninrow(_maxeateninrow);		
 	}
 	
 }

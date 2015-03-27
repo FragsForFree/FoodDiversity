@@ -36,7 +36,7 @@ public class Foodtype {
 	 * set the value maxeateninrow
 	 * @param _maxeateninrow - value to set
 	 */
-	private void setmaxeateninrow(int _maxeateninrow) {
+	public void setmaxeateninrow(int _maxeateninrow) {
 		this.maxeateninrow = _maxeateninrow;
 	}
 	
@@ -79,6 +79,13 @@ public class Foodtype {
 			list = list + material.name() + " | ";
 		}
 		return list;
+	}
+
+	public void removefood(Material _material) {
+		if (!this.isfoodfound(_material)) {
+			this.food.remove(_material);
+		}		
+		
 	}
 	
 }

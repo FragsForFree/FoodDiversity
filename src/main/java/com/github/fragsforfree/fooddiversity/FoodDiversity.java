@@ -198,5 +198,83 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	    	MessageHandler.sendMessage(this, sender, "failed to add foodtype (config)", true);    		
     	}
     }
+
+	public void removeFoodtype(CommandSender sender, String foodtype) {
+		if (this.configManager.removeFoodtype(foodtype)){
+			this.foodtypeHandler.removeFoodtype(foodtype);
+		}
+		else
+		{
+			MessageHandler.sendMessage(this, sender, "failed to remove foodtype (config)", true);
+		}
+		
+	}
+
+	public void addFood(CommandSender sender, String food, String foodtype) {		
+		if (this.checkValidMaterial(food) == true){
+			if (this.configManager.addFood(food, foodtype)){
+				this.foodtypeHandler.addFood(Material.getMaterial(food), foodtype);
+			}
+			else
+			{
+				MessageHandler.sendMessage(this, sender, "failed to add food (config)", true);
+			}			
+		}
+		else
+		{
+			MessageHandler.sendMessage(this, sender, "invalid food", true);
+		}		
+	}
+	
+	public boolean checkValidMaterial(String name){
+		Material material = Material.getMaterial(name);
+		if (material != null) { return true; }
+		return false;
+	}
+
+	public void removeFood(CommandSender sender, String food) {
+		String foodtype;
+		foodtype = this.foodtypeHandler.getfoodtypename(food);
+		if (this.checkValidMaterial(food) == true && foodtype != null){
+			if (this.configManager.removeFood(food, foodtype)){
+				this.foodtypeHandler.removeFood(Material.getMaterial(food), foodtype);
+			}
+		}
+		else
+		{
+			MessageHandler.sendMessage(this, sender, "invalid food", true);
+		}
+		
+	}
+
+	public void setItemInRow(CommandSender sender, String foodtype, String iteminrow) {
+		if (this.isNumeric(iteminrow)){
+			if (this.configManager.setItemInRow(foodtype, Integer.valueOf(iteminrow))){
+				this.foodtypeHandler.setItemInRow(foodtype, Integer.valueOf(iteminrow));
+			}
+			else
+			{
+				MessageHandler.sendMessage(this, sender, "failed to set iteminrow (config)", true);
+			}			
+		}
+		else
+		{
+			MessageHandler.sendMessage(this, sender, "invalid iteminrow value", true);
+		}
+		
+	}
+	
+    private boolean isNumeric(String str)  
+    {  
+      try  
+      {  
+        Double.parseDouble(str);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
     
 }

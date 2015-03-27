@@ -11,8 +11,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
-import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 import com.github.fragsforfree.fooddiversity.enums.STRINGS;
 
 public class FoodDiversityCommandExecuter implements CommandExecutor {
@@ -43,6 +41,17 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     		
     		case 3:
     			
+	    		if(args[0].toLowerCase().equalsIgnoreCase("remove")){
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("foodtype")){
+	    				this.plugin.removeFoodtype(sender, args[2]);
+	    			}
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("food")){
+	    				this.plugin.removeFood(sender, args[2]);
+	    			}
+	    		}
+    			
     			if(args[0].toLowerCase().equalsIgnoreCase("list")){
     				
     				if(args[1].toLowerCase().equalsIgnoreCase("food")){
@@ -57,41 +66,8 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    			if(args[1].toLowerCase().equalsIgnoreCase("debug")){
     					this.plugin.setConfigDebug(sender, args[2]);
     					return true;
-	    			}
+	    			}	    			
 	    			
-	    			if(args[1].toLowerCase().equalsIgnoreCase("fruit")){
-    					if (isInteger(args[2])){
-    						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_FRUIT.getPath(), Integer.parseInt(args[2]));
-    						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_FRUIT_CHANGE.getMessage().replace("%args", args[2]));
-    						plugin.saveConfig();
-    					} else {
-    						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}	
-    					return true;
-	    			}
-	    			
-	    			if(args[1].toLowerCase().equalsIgnoreCase("meat")){
-    					if (isInteger(args[2])){
-    						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_MEAT.getPath(), Integer.parseInt(args[2]));
-    						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_MEAT_CHANGE.getMessage().replace("%args", args[2]));
-    						plugin.saveConfig();
-    					} else {
-    						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}	
-    					return true;
-	    			}
-	    			
-	    			if(args[1].toLowerCase().equalsIgnoreCase("spezial")){
-    					if (isInteger(args[2])){
-    						plugin.getConfig().set(CONFIG.CONFIG_ITEMSINROW_SPEZIAL.getPath(), Integer.parseInt(args[2]));
-    						sender.sendMessage(ChatColor.GREEN + MESSAGE.CMD_SPEZIAL_CHANGE.getMessage().replace("%args", args[2]));
-    						plugin.saveConfig();
-    					} else {
-    						sender.sendMessage(ChatColor.RED + MESSAGE.EXPECT_NUMERIC.getMessage());
-    					}	
-    					return true;
-	    			}
-
     			}
     			
     			this.sendHelp(sender);
@@ -99,7 +75,21 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     		
     		case 4:
     			
-	    		if(args[0].toLowerCase().equalsIgnoreCase("add")){    			
+	    		if(args[0].toLowerCase().equalsIgnoreCase("add")){    				    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("food")){
+	    				this.plugin.addFood(sender, args[2], args[3]);
+	    			}
+	    		}
+	    		
+	    		if(args[0].toLowerCase().equalsIgnoreCase("set")){
+	    			if(args[1].toLowerCase().equalsIgnoreCase("iteminrow")){
+	    				this.plugin.setItemInRow(sender, args[2], args[3]);
+	    			}
+	    		}
+	    		
+    		case 5:
+    			
+    			if(args[0].toLowerCase().equalsIgnoreCase("add")){     				
 	    			if(args[1].toLowerCase().equalsIgnoreCase("foodtype")){	    					    				
 	    				if(this.isInteger(args[3])){
 	    					List<String> list = Arrays.asList(args[4].split(";").toString().toUpperCase());
@@ -107,6 +97,7 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    				}    				
 	    			}	    			
 	    		}
+	    		
     			
 	    	default:	    			    		
 	    		this.sendHelp(sender);
@@ -140,10 +131,12 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Help.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Help.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Debug.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Debug.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Foodtypes.getTip());
-			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Food.getTip());			
-			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_03.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_03.getTip());
-			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_04.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_04.getTip());
-			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.LINE_05.getCommand() + ChatColor.WHITE + EnumCommandhelp.LINE_05.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Food.getTip());						
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Add_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Add_Foodtypes.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Remove_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Remove_Foodtypes.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Add_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Add_Food.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Remove_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Remove_Food.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_ItemInRow.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_ItemInRow.getTip());
     	}
     	
     }

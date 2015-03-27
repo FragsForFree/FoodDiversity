@@ -6,9 +6,11 @@ public enum EnumCommandhelp {
 	Cmd_Set_Debug("/fooddiversity set debug [true/false] ", "set the debugmodes (default: false)"),
 	Cmd_List_Foodtypes("/fooddiversity list foodtypes ", "list all loaded foodtypes"),
 	Cmd_List_Food("/fooddiversity list food [foodtype] ", "list all food of given foodtype"),
-	LINE_03("/fooddiversity set fruit [integer] ", "set the eaten in row trigger for the type of fruit food"),
-	LINE_04("/fooddiversity set meat [integer] ", "set the eaten in row trigger for the type of meat food"),
-	LINE_05("/fooddiversity set spezial [integer] ", "set the eaten in row trigger for the type of spezial food");
+	Cmd_Add_Foodtypes("/fooddiversity add foodtype <foodtype> <iteminrow[integer]> ", "create a new foodtype"),
+	Cmd_Add_Food("/fooddiversity add food <food> <foodtype> ", "adds food to a foodtype"),
+	Cmd_Remove_Foodtypes("/fooddiversity remove foodtype <foodtype> ", "removes the foodtype"),
+	Cmd_Remove_Food("/fooddiversity remove food <food> ", "remove food from a foodtype"),
+	Cmd_Set_ItemInRow("/fooddiversity set iteminrow <foodtype> <iteminrow[integer]> ", "set the eaten in row trigger for the type of given foodtype");
 	
 	private String command;
 	private String tip;
