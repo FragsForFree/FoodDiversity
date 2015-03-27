@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 
 public class FoodtypeHandler {
 
 	private List<Foodtype> Foodtypes;
-	private final Plugin PLUGIN;
+	private final FoodDiversity PLUGIN;
 	
-	public FoodtypeHandler(FoodDiversity instance) {
-		this.PLUGIN = instance;
+	public FoodtypeHandler(FoodDiversity plugin) {
+		this.PLUGIN = plugin;
 		this.Foodtypes = new ArrayList<Foodtype>();
 	}
 	
@@ -29,24 +28,22 @@ public class FoodtypeHandler {
 	 */
 	public void addFoodtype(String _name, List<String> listOfFood, int _maxeateninrow) {
 		if (getfoodtype(_name) == null) {
-			PLUGIN.getLogger().log(Level.INFO, "Name des Foodtype: " + _name, ""); 
+			MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, "Name des Foodtype: " + _name, PLUGIN.getDebug());
 			Foodtype _foodtype = new Foodtype(_name, _maxeateninrow);
 			for (String food: listOfFood)
 			{
 				try{
 					Material _material = Material.getMaterial(food);
-					if (PLUGIN.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-						PLUGIN.getLogger().log(Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", _material.name()));
-						if (this.getfoodtypename(_material.name()) == null) {						
-							_foodtype.addfood(_material);
-						}
-						else
-						{
-							PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_COUNT.getMessage().replace("%material", _material.name()));	
-						}
-					}				
+					MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", _material.name()), PLUGIN.getDebug());
+					if (this.getfoodtypename(_material.name()) == null) {						
+						_foodtype.addfood(_material);
+					}
+					else
+					{
+						MessageHandler.sendConsoleDebug(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_COUNT.getMessage().replace("%material", _material.name()), PLUGIN.getDebug());
+					}
 				} catch (Exception ex) {
-					PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", food));
+					MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", food));
 				}							
 			}
 			Foodtypes.add(_foodtype);
@@ -70,7 +67,7 @@ public class FoodtypeHandler {
 	 */
 	public Foodtype getfoodtype(String _name) {
 		for (Foodtype _foodtype: Foodtypes){			
-			if (_foodtype.getname() == _name) {
+			if (_foodtype.getname().equalsIgnoreCase(_name)) {
 				return _foodtype;
 			}			
 		}
@@ -120,7 +117,7 @@ public class FoodtypeHandler {
 			Material _material = Material.getMaterial(_food);
 			return _material;
 		} catch (Exception ex) {
-			PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", _food));
+			MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", _food));
 		}
 		return null;
 	}

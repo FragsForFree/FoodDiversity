@@ -76,7 +76,7 @@ public class Foodtype {
 	public String getFoodList(){
 		String list = "";
 		for(Material material : food){
-			list = list + material.name();
+			list = list + material.name() + " | ";
 		}
 		return list;
 	}

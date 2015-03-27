@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 
 public class PlayerInteract implements Listener {
 
@@ -37,9 +38,7 @@ public class PlayerInteract implements Listener {
     public void onInteract(PlayerInteractEvent event){
     	if((event.getPlayer().getFoodLevel() < 20) && (event.getClickedBlock() != null)) {
 	    	if(Material.CAKE_BLOCK == event.getClickedBlock().getType()){
-				if (plugin.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-					plugin.getLogger().log(Level.INFO, MESSAGE.CLICKED_CAKE.getMessage());
-				}    	
+				MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.CLICKED_CAKE.getMessage(), plugin.getDebug());   	
 				
 				ItemStack item = new ItemStack(Material.CAKE);
 				plugin.checkFoodDiversity(event.getPlayer(), item);
@@ -57,9 +56,7 @@ public class PlayerInteract implements Listener {
 		        				
 		        				public void run(){	        						        					
 		        					world.getBlockAt(loc).setData((byte) (world.getBlockAt(loc).getData() -1));;
-		        					if (plugin.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-		        						plugin.getServer().getLogger().log(Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage());
-		        					}
+		        					MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage(), plugin.getDebug());
 		        				}	        				
 		        				
 		        			}, 10L);

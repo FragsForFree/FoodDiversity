@@ -7,7 +7,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -48,6 +47,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	foodtypeHandler = new FoodtypeHandler(this);
     	configManager = new ConfigurationManager(this, this);
     	this.getConfigDebug();
+    	configManager.getFoodConfiguration();
     	initialisePlayerDB();
     	addMetrics();    	
     	
@@ -67,9 +67,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	    MetricsLite metrics = new MetricsLite(this);
     	    metrics.start();
     	} catch (IOException e) {
-        	if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-        		this.getLogger().log(Level.INFO, MESSAGE.METRICS_FAILED.getMessage());
-        	} 
+        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.METRICS_FAILED.getMessage(), this.getDebug());
     	}
     }
     
@@ -107,9 +105,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
      */
     private boolean isCake(ItemStack item){
     	if(Material.CAKE == item.getType()){
-        	if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-        		this.getLogger().log(Level.INFO, MESSAGE.ITEM_ISCAKE.getMessage());
-        	} 
+        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.ITEM_ISCAKE.getMessage(), this.getDebug());
     		return true;
     	}
     	return false;
@@ -135,9 +131,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	    		String eatentype = playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath());
 	    		int eaten = playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath());
 		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
-		    		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-		    			this.getLogger().log(Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype)); 
-		    		}	    		
+		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getDebug());    		
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), true);
 		    	} else {
 		    		if (type.equals(eatentype)){
@@ -150,22 +144,18 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_NAME.getPath(), name);
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);		    		
 		    		playerDB.save();
-		    		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-		    			this.getLogger().log(Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type));
-		    		}		    		
+		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getDebug());		    		
 		    	}     		
 	    	} else {
 	    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);
 	    	}
 	    	playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), true);
     	} else {
-    		if (getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath())) {
-    			this.getLogger().log(Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name));
-    		}  		
+    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name), this.getDebug()); 		
     	}
     }   
     
-    private void getConfigDebug(){
+    public void getConfigDebug(){
     	this.setDebug(this.configManager.getDebug());
     }
     
@@ -177,45 +167,25 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	}
     	else
     	{
-        	if (sender instanceof ConsoleCommandSender){
-        		MessageHandler.sendConsole(this, Level.INFO, MESSAGE.EXPECT_BOOLEAN.getMessage());
-        	}
-        	if (sender instanceof Player){
-        		MessageHandler.sendPlayerMessage((Player) sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
-        	}
+        	MessageHandler.sendMessage(this, sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
     	}
     }
     
     public void listFoodtypes(CommandSender sender){
     	String list = "";
     	list = this.foodtypeHandler.getListFoodtypes();
-    	if (sender instanceof ConsoleCommandSender){
-    		MessageHandler.sendConsole(this, Level.INFO, "loaded foodtypes: " + list);
-    	}
-    	if (sender instanceof Player){
-    		MessageHandler.sendPlayerMessage((Player) sender, "loaded foodtypes: " + list, false);
-    	}    	
+    	MessageHandler.sendMessage(this, sender, "loaded foodtypes: " + list, false); 	
     }
     
     public void listFood(CommandSender sender, String foodtype){
     	String list = "";
     	if(this.foodtypeHandler.getfoodtype(foodtype) != null){
 	    	list = this.foodtypeHandler.getListFood(foodtype);
-	    	if (sender instanceof ConsoleCommandSender){
-	    		MessageHandler.sendConsole(this, Level.INFO, "food of " + foodtype.toUpperCase() + ": " + list);
-	    	}
-	    	if (sender instanceof Player){
-	    		MessageHandler.sendPlayerMessage((Player) sender, "food of " + foodtype.toUpperCase() + ": " + list, false);
-	    	}      		    		
+	    	MessageHandler.sendMessage(this, sender, "food of " + foodtype.toUpperCase() + ": " + list, false);    		    		
     	}
     	else
     	{
-	    	if (sender instanceof ConsoleCommandSender){
-	    		MessageHandler.sendConsole(this, Level.INFO, "unknown foodtype: " + foodtype);
-	    	}
-	    	if (sender instanceof Player){
-	    		MessageHandler.sendPlayerMessage((Player) sender, "unknown foodtype: " + foodtype, true);
-	    	}   		
+	    	MessageHandler.sendMessage(this, sender, "unknown foodtype: " + foodtype, true); 		
     	}
     }
     
@@ -225,12 +195,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	}
     	else
     	{
-	    	if (sender instanceof ConsoleCommandSender){
-	    		MessageHandler.sendConsole(this, Level.INFO, "failed to add foodtype (config)");
-	    	}
-	    	if (sender instanceof Player){
-	    		MessageHandler.sendPlayerMessage((Player) sender, "failed to add foodtype (config)", true);
-	    	}     		
+	    	MessageHandler.sendMessage(this, sender, "failed to add foodtype (config)", true);    		
     	}
     }
     

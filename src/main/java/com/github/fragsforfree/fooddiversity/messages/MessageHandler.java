@@ -3,6 +3,8 @@ package com.github.fragsforfree.fooddiversity.messages;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -14,8 +16,23 @@ public final class MessageHandler {
 		 
 	}
 	
+	public static void sendMessage(Plugin plugin, CommandSender sender, String Message, boolean Error){
+    	if (sender instanceof ConsoleCommandSender){
+    		MessageHandler.sendConsole(plugin, Level.INFO, Message);
+    	}
+    	if (sender instanceof Player){
+    		MessageHandler.sendPlayerMessage((Player) sender, Message, false);
+    	} 
+	}
+	
 	public static void sendConsole(Plugin plugin, Level loglvl, String Message){
 		plugin.getLogger().log(loglvl, Message);
+	}
+	
+	public static void sendConsoleDebug(Plugin plugin, Level loglvl, String Message, boolean debug){
+		if (debug == true){
+			plugin.getLogger().log(loglvl, Message);
+		}
 	}
 	
 	public static void sendPlayerMessage(Player player, String Message, boolean Error){

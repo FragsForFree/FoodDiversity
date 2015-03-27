@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
+
 public class PlayerDB {
 
 	private final Plugin PLUGIN;
@@ -54,9 +56,9 @@ public class PlayerDB {
 		if(!this.FOLDER.exists()){
 			try{
 				if(this.FOLDER.mkdir()){
-					this.PLUGIN.getLogger().log(Level.INFO, "Folder " + this.FOLDER.getName() + " created.");					
+					MessageHandler.sendConsole(PLUGIN, Level.INFO, "Folder " + this.FOLDER.getName() + " created.");				
 				} else {
-				this.PLUGIN.getLogger().log(Level.WARNING, "Unable to create folder " + this.FOLDER.getName() + ".");
+					MessageHandler.sendConsole(PLUGIN, Level.WARNING, "Unable to create folder " + this.FOLDER.getName() + ".");
 				}
 			} catch(Exception e) {				
 			}
@@ -67,7 +69,7 @@ public class PlayerDB {
 			try{
 				configFile.createNewFile();		
 			} catch (IOException e){
-				
+				MessageHandler.sendConsole(PLUGIN, Level.WARNING, "error creating new file: " + e.toString());
 			}
 		}
 		config = YamlConfiguration.loadConfiguration(configFile);	
@@ -89,7 +91,7 @@ public class PlayerDB {
 		try {
 			getConfig().save(configFile);
 		} catch (IOException ex) {
-			this.PLUGIN.getLogger().log(Level.WARNING, "Could not save PlayerDB to " + configFile.getName(), ex);
+			MessageHandler.sendConsole(PLUGIN, Level.WARNING, "Could not save PlayerDB to " + configFile.getName() + ": " + ex);
 		}
 	}
 	

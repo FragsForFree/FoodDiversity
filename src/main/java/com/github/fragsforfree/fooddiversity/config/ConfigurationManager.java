@@ -5,9 +5,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
@@ -33,7 +31,7 @@ public class ConfigurationManager {
     public void initialiseConfig(){
     	FileConfiguration config = PLUGIN.getConfig(); 
     	config.addDefault(CONFIG.PLUGIN_CONFIGVERSION.getPath(), CONFIG.PLUGIN_CONFIGVERSION.getInt());
-    	config.addDefault(CONFIG.PLUGIN_DEBUG.getPath(), CONFIG.PLUGIN_DEBUG.getBoolean());    	
+    	config.addDefault(CONFIG.PLUGIN_DEBUG.getPath(), CONFIG.PLUGIN_DEBUG.getBoolean());   	
     	if (PLUGIN.getConfig().getKeys(true).isEmpty()) {
         	config.addDefault(CONFIG.CONFIG_ITEMSINROW_FRUIT.getPath(), CONFIG.CONFIG_ITEMSINROW_FRUIT.getInt());
         	config.addDefault(CONFIG.CONFIG_ITEMSINROW_MEAT.getPath(), CONFIG.CONFIG_ITEMSINROW_MEAT.getInt());
@@ -48,16 +46,14 @@ public class ConfigurationManager {
     	PLUGIN.saveConfig();
     	
     	if(config.getInt(CONFIG.PLUGIN_CONFIGVERSION.getPath()) != CONFIG.PLUGIN_CONFIGVERSION.getInt()){
-    		PLUGIN.getLogger().log(Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
-    	}
-    	
-    	this.getFoodConfiguration();
+    		MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
+    	}    	
     }
     
     /**
      *  get the foodtype-configuration and give each one to the foodtypehandler
      */
-    private void getFoodConfiguration() {
+    public void getFoodConfiguration() {
     	int itemInRow;
     	Set<String> keys = PLUGIN.getConfig().getKeys(true);
     	for (String key: keys){
@@ -69,7 +65,7 @@ public class ConfigurationManager {
     			}
     			catch (Exception  ex)
     			{
-    				PLUGIN.getLogger().log(Level.WARNING, "configuration failure under 'Config.ItemsInRow." + foodtype +"', use defaultvalue '3'");
+    				MessageHandler.sendConsole(PLUGIN, Level.WARNING, "configuration failure under 'Config.ItemsInRow." + foodtype +"', use defaultvalue '3'");
     				itemInRow = 3;
     			}
     			List<String> listOfFood = PLUGIN.getConfig().getStringList(key);
@@ -85,12 +81,7 @@ public class ConfigurationManager {
     public void setDebug(CommandSender sender, boolean value){
     	this.PLUGIN.getConfig().set(CONFIG.PLUGIN_DEBUG.getPath(), value);    	
     	this.PLUGIN.saveConfig();
-    	if (sender instanceof ConsoleCommandSender){
-    		MessageHandler.sendConsole(PLUGIN, Level.INFO, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)));
-    	}
-    	if (sender instanceof Player){
-    		MessageHandler.sendPlayerMessage((Player) sender, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
-    	}
+    	MessageHandler.sendMessage(PLUGIN, sender, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
     }
 	
     public boolean addFoodtype(String foodtype, List<String> food, int itemInRow){
