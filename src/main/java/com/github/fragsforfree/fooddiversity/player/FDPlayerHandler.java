@@ -48,6 +48,15 @@ public class FDPlayerHandler {
 		}
 	}
 	
+	public String getValueName(String uuid){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			return fdplayer.getName();
+		}
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		return null;		
+	}
+	
 	public void setValueLasteatentype(String uuid, String value){
 		FDPlayer fdplayer = getFDPlayer(uuid);
 		if (fdplayer != null){
@@ -111,7 +120,7 @@ public class FDPlayerHandler {
 	public void setValueIsConsuming(String uuid, boolean value){
 		FDPlayer fdplayer = getFDPlayer(uuid);
 		if (fdplayer != null){
-			fdplayer.setIsCake(value);
+			fdplayer.setIsConsuming(value);
 		}
 		else
 		{

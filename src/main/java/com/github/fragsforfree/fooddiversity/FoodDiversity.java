@@ -314,6 +314,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     }
     
     public void PlayerQuid(String uuid){
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_NAME.getPath(), this.fdplayerHandler.getValueName(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath(), this.fdplayerHandler.getValueLasteatentype(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), this.fdplayerHandler.getValueEateninrow(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), this.fdplayerHandler.getValueToBlock(uuid));
