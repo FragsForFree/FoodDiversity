@@ -12,18 +12,20 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
-import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
+import com.github.fragsforfree.fooddiversity.player.FDPlayerHandler;
 
 public class PlayerInteract implements Listener {
 
 	private FoodDiversity plugin;
+	private FDPlayerHandler fdplayerhandler;
 	private World world;
 	private Location loc;
 
-	public PlayerInteract(FoodDiversity plugin){
+	public PlayerInteract(FoodDiversity plugin, FDPlayerHandler _fdplayerhandler){
 		this.plugin = plugin;
+		this.fdplayerhandler = _fdplayerhandler;
 	}	
 	
     /**
@@ -44,7 +46,8 @@ public class PlayerInteract implements Listener {
 				plugin.checkFoodDiversity(event.getPlayer(), item);
 				
 				String uuid = event.getPlayer().getUniqueId().toString();				
-	        	if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){
+				if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
+				/**if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){**/
 	        		if (Action.RIGHT_CLICK_BLOCK == event.getAction()){
 		        		if (event.getClickedBlock().getData() > 0) {
 		        			event.getClickedBlock().setData((byte) (event.getClickedBlock().getData() -1)); //lose at least one damage, if the cake is full

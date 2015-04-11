@@ -12,13 +12,16 @@ import com.github.fragsforfree.fooddiversity.FoodDiversity;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
+import com.github.fragsforfree.fooddiversity.player.FDPlayerHandler;
 
 public class FoodLevelChange implements Listener {
 
 	private FoodDiversity plugin;
+	private FDPlayerHandler fdplayerhandler;
 
-	public FoodLevelChange(FoodDiversity plugin){
+	public FoodLevelChange(FoodDiversity plugin, FDPlayerHandler _fdplayerhandler){
 		this.plugin = plugin;
+		this.fdplayerhandler = _fdplayerhandler;
 	}	
 	
     /**
@@ -35,11 +38,14 @@ public class FoodLevelChange implements Listener {
     		    		
     		Player player = (Player) event.getEntity();	        		        	
         	String uuid = player.getUniqueId().toString();
-        	        	
-        	if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){
-	    		plugin.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);	    		
+        	
+        	if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
+        	/**if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){**/
+        		this.fdplayerhandler.setValueToblock(uuid, false);
+        		/**plugin.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);**/    		
 	    		
-	    		if(!plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCAKE.getPath())){
+        		if(!this.fdplayerhandler.getValueIsCake(uuid)){
+	    		/**if(!plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCAKE.getPath())){**/
 		    		ItemStack item = player.getItemInHand();	    			    		
 	    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getDebug());  	
 		        	item.setAmount(item.getAmount() + 1);	        	
@@ -47,13 +53,14 @@ public class FoodLevelChange implements Listener {
 		        	player.setItemInHand(item);    	
 		    		player.updateInventory();	    			
 	    		}	    			    		
-	        	
-	        	MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())), plugin.getName(), true);
+        		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        	
+	        	/**MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())), plugin.getName(), true);**/
 	    		//player.sendMessage(ChatColor.RED + (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())));	        	
 	    		event.setCancelled(true); 	    			    		
 	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getDebug());	        		
         	}
-        	plugin.playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), false);
+        	this.fdplayerhandler.setValueIsConsuming(uuid, false);
+        	/**plugin.playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), false);**/
     	}
     	
     }	

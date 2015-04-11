@@ -20,16 +20,20 @@ import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
 import com.github.fragsforfree.fooddiversity.events.FoodLevelChange;
 import com.github.fragsforfree.fooddiversity.events.PlayerInteract;
 import com.github.fragsforfree.fooddiversity.events.PlayerItemConsume;
+import com.github.fragsforfree.fooddiversity.events.PlayerJoin;
+import com.github.fragsforfree.fooddiversity.events.PlayerQuit;
 import com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import com.github.fragsforfree.fooddiversity.mcstat.MetricsLite;
 import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 import com.github.fragsforfree.fooddiversity.permission.EnumPermissions;
+import com.github.fragsforfree.fooddiversity.player.FDPlayerHandler;
 
 public class FoodDiversity extends JavaPlugin implements Listener {
 
-	public PlayerDB playerDB;
+	private PlayerDB playerDB;
 	private ConfigurationManager configManager;
 	public FoodtypeHandler foodtypeHandler;
+	private FDPlayerHandler fdplayerHandler;
 	private boolean debug;
 	
 	private void setDebug(boolean value){
@@ -45,6 +49,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	 */
     public void onEnable(){ 
     	foodtypeHandler = new FoodtypeHandler(this);
+    	fdplayerHandler = new FDPlayerHandler(this);
     	configManager = new ConfigurationManager(this, this);
     	this.getConfigDebug();
     	configManager.getFoodConfiguration();
@@ -52,9 +57,11 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	addMetrics();    	
     	
     	PluginManager pm = getServer().getPluginManager();
-    	pm.registerEvents(new FoodLevelChange(this),  this);
-    	pm.registerEvents(new PlayerInteract(this),  this);
+    	pm.registerEvents(new FoodLevelChange(this, this.fdplayerHandler),  this);
+    	pm.registerEvents(new PlayerInteract(this, this.fdplayerHandler),  this);
     	pm.registerEvents(new PlayerItemConsume(this),  this);
+    	pm.registerEvents(new PlayerJoin(this), this);
+    	pm.registerEvents(new PlayerQuit(this), this);
         
         getCommand(this.getName().toLowerCase()).setExecutor(new FoodDiversityCommandExecuter(this));
     }
@@ -126,30 +133,39 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     		type = this.getFoodtype(item);	    	
 	 
 	    	if(type != null){
-		    	playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.isCake(item));
-	    		
-	    		String eatentype = playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath());
-	    		int eaten = playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath());
+		    	this.fdplayerHandler.setValueIsCake(uuid, this.isCake(item));
+	    		/**playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.isCake(item));**/
+
+	    		String eatentype = this.fdplayerHandler.getValueLasteatentype(uuid);
+	    		int eaten = this.fdplayerHandler.getValueEateninrow(uuid);		    	
+	    		/**String eatentype = playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath());
+	    		int eaten = playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath());**/
 		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
 		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getDebug());    		
-		    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), true);
+		    		this.fdplayerHandler.setValueToblock(uuid, true);
+		    		/**playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), true);**/
 		    	} else {
 		    		if (type.equals(eatentype)){
 		    			eaten = eaten + 1;		    			
 		    		} else {
 		    			eaten = 1;
 		    		}
-		    		playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), eaten);
+		    		this.fdplayerHandler.setValueEateninrow(uuid, eaten);
+		    		this.fdplayerHandler.setValueLasteatentype(uuid, type);
+		    		this.fdplayerHandler.setValueToblock(uuid, false);
+		    		/**playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), eaten);
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath(), type);
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_NAME.getPath(), name);
 		    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);		    		
-		    		playerDB.save();
+		    		playerDB.save();**/
 		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getDebug());		    		
 		    	}     		
 	    	} else {
-	    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);
+	    		this.fdplayerHandler.setValueToblock(uuid, false);
+	    		/**playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);**/
 	    	}
-	    	playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), true);
+	    	this.fdplayerHandler.setValueIsConsuming(uuid, true);
+	    	/**playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), true);**/
     	} else {
     		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name), this.getDebug()); 		
     	}
@@ -275,6 +291,36 @@ public class FoodDiversity extends JavaPlugin implements Listener {
         return false;  
       }  
       return true;  
+    }
+    
+    public void PlayerJoin(String uuid, String name){    	
+    	this.fdplayerHandler.addFDPlayer(uuid, name);
+    	if (this.playerDB.getConfig().contains(uuid)){
+    		this.fdplayerHandler.setValueLasteatentype(uuid, this.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath()));
+    		this.fdplayerHandler.setValueEateninrow(uuid, this.playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath()));
+    		this.fdplayerHandler.setValueToblock(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()));
+    		this.fdplayerHandler.setValueIsConsuming(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()));
+    		this.fdplayerHandler.setValueIsCake(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCAKE.getPath()));
+    	}
+    	else
+    	{
+    		this.fdplayerHandler.setValueLasteatentype(uuid, "nothing");
+    		this.fdplayerHandler.setValueEateninrow(uuid, 0);
+    		this.fdplayerHandler.setValueToblock(uuid, false);
+    		this.fdplayerHandler.setValueIsConsuming(uuid, false);
+    		this.fdplayerHandler.setValueIsCake(uuid, false);    		
+    	}
+    	
+    }
+    
+    public void PlayerQuid(String uuid){
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath(), this.fdplayerHandler.getValueLasteatentype(uuid));
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), this.fdplayerHandler.getValueEateninrow(uuid));
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), this.fdplayerHandler.getValueToBlock(uuid));
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), this.fdplayerHandler.getValueIsConsuming(uuid));
+    	this.playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.fdplayerHandler.getValueIsCake(uuid));
+    	this.playerDB.save();
+    	this.fdplayerHandler.removeFDPlayer(uuid);    	
     }
     
 }
