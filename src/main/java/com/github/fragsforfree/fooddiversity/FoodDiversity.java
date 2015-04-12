@@ -134,16 +134,12 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	 
 	    	if(type != null){
 		    	this.fdplayerHandler.setValueIsCake(uuid, this.isCake(item));
-	    		/**playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.isCake(item));**/
 
 	    		String eatentype = this.fdplayerHandler.getValueLasteatentype(uuid);
 	    		int eaten = this.fdplayerHandler.getValueEateninrow(uuid);		    	
-	    		/**String eatentype = playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath());
-	    		int eaten = playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_EATENINROW.getPath());**/
 		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
 		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getDebug());    		
 		    		this.fdplayerHandler.setValueToblock(uuid, true);
-		    		/**playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), true);**/
 		    	} else {
 		    		if (type.equals(eatentype)){
 		    			eaten = eaten + 1;		    			
@@ -153,19 +149,12 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		    		this.fdplayerHandler.setValueEateninrow(uuid, eaten);
 		    		this.fdplayerHandler.setValueLasteatentype(uuid, type);
 		    		this.fdplayerHandler.setValueToblock(uuid, false);
-		    		/**playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), eaten);
-		    		playerDB.set(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath(), type);
-		    		playerDB.set(uuid + CONFIG.PLAYERDB_NAME.getPath(), name);
-		    		playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);		    		
-		    		playerDB.save();**/
 		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getDebug());		    		
 		    	}     		
 	    	} else {
 	    		this.fdplayerHandler.setValueToblock(uuid, false);
-	    		/**playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);**/
 	    	}
 	    	this.fdplayerHandler.setValueIsConsuming(uuid, true);
-	    	/**playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), true);**/
     	} else {
     		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name), this.getDebug()); 		
     	}

@@ -40,12 +40,9 @@ public class FoodLevelChange implements Listener {
         	String uuid = player.getUniqueId().toString();
         	
         	if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
-        	/**if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){**/
-        		this.fdplayerhandler.setValueToblock(uuid, false);
-        		/**plugin.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), false);**/    		
+        		this.fdplayerhandler.setValueToblock(uuid, false);   		
 	    		
         		if(!this.fdplayerhandler.getValueIsCake(uuid)){
-	    		/**if(!plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCAKE.getPath())){**/
 		    		ItemStack item = player.getItemInHand();	    			    		
 	    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getDebug());  	
 		        	item.setAmount(item.getAmount() + 1);	        	
@@ -53,14 +50,11 @@ public class FoodLevelChange implements Listener {
 		        	player.setItemInHand(item);    	
 		    		player.updateInventory();	    			
 	    		}	    			    		
-        		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        	
-	        	/**MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())), plugin.getName(), true);**/
-	    		//player.sendMessage(ChatColor.RED + (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", plugin.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath())));	        	
+        		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        		        	
 	    		event.setCancelled(true); 	    			    		
 	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getDebug());	        		
         	}
         	this.fdplayerhandler.setValueIsConsuming(uuid, false);
-        	/**plugin.playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), false);**/
     	}
     	
     }	

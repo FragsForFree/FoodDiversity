@@ -47,7 +47,6 @@ public class PlayerInteract implements Listener {
 				
 				String uuid = event.getPlayer().getUniqueId().toString();				
 				if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
-				/**if(plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()) && (plugin.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()))){**/
 	        		if (Action.RIGHT_CLICK_BLOCK == event.getAction()){
 		        		if (event.getClickedBlock().getData() > 0) {
 		        			event.getClickedBlock().setData((byte) (event.getClickedBlock().getData() -1)); //lose at least one damage, if the cake is full
