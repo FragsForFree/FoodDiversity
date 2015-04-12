@@ -41,12 +41,21 @@ public class ConfigurationManager {
         	config.addDefault(CONFIG.CONFIG_ITEMS_SPEZIAL.getPath(), CONFIG.CONFIG_ITEMS_SPEZIAL.getListOfStrings());    		
     	}
     	config.addDefault(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath(), CONFIG.CONFIG_MESSAGE_DIVERSITY.getString());
+    	config.addDefault(CONFIG.CONFIG_FEATURE_ITEMINROW.getPath(), CONFIG.CONFIG_FEATURE_ITEMINROW.getBoolean());
+    	config.addDefault(CONFIG.CONFIG_FEATURE_DIVERSITY.getPath(), CONFIG.CONFIG_FEATURE_DIVERSITY.getBoolean());
     	
     	config.options().copyDefaults(true); 
     	PLUGIN.saveConfig();
     	
-    	if(config.getInt(CONFIG.PLUGIN_CONFIGVERSION.getPath()) != CONFIG.PLUGIN_CONFIGVERSION.getInt()){
-    		MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
+    	if(config.getInt(CONFIG.PLUGIN_CONFIGVERSION.getPath()) != CONFIG.PLUGIN_CONFIGVERSION.getInt()){    		
+    		if(config.getInt(CONFIG.PLUGIN_CONFIGVERSION.getPath()) == 1 && CONFIG.PLUGIN_CONFIGVERSION.getInt() == 2){
+    			config.set(CONFIG.PLUGIN_CONFIGVERSION.getPath(), 2);
+    			PLUGIN.saveConfig();
+    		}
+    		else
+    		{
+    			MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
+    		}
     	}    	
     }
     

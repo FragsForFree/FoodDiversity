@@ -113,12 +113,20 @@ public class FoodtypeHandler {
 		return null;
 	}
 	
-	public String getListFoodtypes(){
+	public String getStringOfFoodtypes(){
 		String list = "";
 		for (Foodtype _foodtype: Foodtypes){
 			list = list + _foodtype.getname() + " | ";
 		}	
 		return list;
+	}
+	
+	public List<String> getListFoodtypes(){
+		List<String> foodtypes = new ArrayList<String>();
+		for (Foodtype _foodtype: Foodtypes){
+			foodtypes.add(_foodtype.getname());
+		}
+		return foodtypes;
 	}
 	
 	public String getListFood(String _name){

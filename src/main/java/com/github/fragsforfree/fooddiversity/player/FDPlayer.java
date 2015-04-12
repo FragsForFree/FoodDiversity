@@ -1,5 +1,8 @@
 package com.github.fragsforfree.fooddiversity.player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FDPlayer {
 
 	private String uuid;
@@ -9,6 +12,7 @@ public class FDPlayer {
 	private boolean toblock;
 	private boolean isconsuming;
 	private boolean iscake;
+	private Map<String, Integer> diversityvalues;
 	
 	public String getUuid(){
 		return uuid;
@@ -58,9 +62,28 @@ public class FDPlayer {
 		return iscake;
 	}
 	
+	public void addDiversityEntry(String key, Integer value){
+		if(!this.diversityvalues.containsKey(key)){
+			this.diversityvalues.put(key, value);
+		}
+	}
+	
+	public void removeDiversityEntry(String key){
+		this.diversityvalues.remove(key);
+	}
+	
+	public String getDiversityString(){
+		return this.diversityvalues.toString();
+	}
+	
+	public Integer getDiversityValue(String key){
+		return this.diversityvalues.get(key);
+	}
+	
 	public FDPlayer (String _uuid, String _name){
 		this.uuid = _uuid;
 		this.name = _name;
+		this.diversityvalues = new HashMap<String, Integer>();
 	}
 		
 }

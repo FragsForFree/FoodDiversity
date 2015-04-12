@@ -2,6 +2,7 @@ package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -178,7 +179,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     
     public void listFoodtypes(CommandSender sender){
     	String list = "";
-    	list = this.foodtypeHandler.getListFoodtypes();
+    	list = this.foodtypeHandler.getStringOfFoodtypes();
     	MessageHandler.sendMessage(this, sender, "loaded foodtypes: " + list, false); 	
     }
     
@@ -207,6 +208,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	public void removeFoodtype(CommandSender sender, String foodtype) {
 		if (this.configManager.removeFoodtype(foodtype)){
 			this.foodtypeHandler.removeFoodtype(foodtype);
+			this.fdplayerHandler.removeDiversityEntry(foodtype);
 		}
 		else
 		{
@@ -283,6 +285,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     }
     
     public void PlayerJoin(String uuid, String name){    	
+     	List<String> foodtypes = this.foodtypeHandler.getListFoodtypes();   	
     	this.fdplayerHandler.addFDPlayer(uuid, name);
     	if (this.playerDB.getConfig().contains(uuid)){
     		this.fdplayerHandler.setValueLasteatentype(uuid, this.playerDB.getConfig().getString(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath()));
@@ -290,6 +293,9 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     		this.fdplayerHandler.setValueToblock(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath()));
     		this.fdplayerHandler.setValueIsConsuming(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath()));
     		this.fdplayerHandler.setValueIsCake(uuid, this.playerDB.getConfig().getBoolean(uuid + CONFIG.PLAYERDB_ISCAKE.getPath()));
+	    	for(String foodtype : foodtypes){
+	    		this.fdplayerHandler.addDiversityEntry(uuid, foodtype, this.playerDB.getConfig().getInt(uuid + CONFIG.PLAYERDB_DIVERSITY.getPath() + foodtype));
+	    	}		
     	}
     	else
     	{
@@ -297,18 +303,28 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     		this.fdplayerHandler.setValueEateninrow(uuid, 0);
     		this.fdplayerHandler.setValueToblock(uuid, false);
     		this.fdplayerHandler.setValueIsConsuming(uuid, false);
-    		this.fdplayerHandler.setValueIsCake(uuid, false);    		
-    	}
+    		this.fdplayerHandler.setValueIsCake(uuid, false);
+	    	for(String foodtype : foodtypes){
+	    		this.fdplayerHandler.addDiversityEntry(uuid, foodtype, 5);
+	    	}    		
+    	}    	
     	
+    	MessageHandler.sendConsoleDebug(this, Level.INFO, "Diversity: " + this.fdplayerHandler.getDiversityString(uuid), this.getDebug());
     }
     
-    public void PlayerQuid(String uuid){
+    public void PlayerQuit(String uuid){
+    	this.playerDB.set(uuid, null);
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_NAME.getPath(), this.fdplayerHandler.getValueName(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_LASTEATENTYPE.getPath(), this.fdplayerHandler.getValueLasteatentype(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_EATENINROW.getPath(), this.fdplayerHandler.getValueEateninrow(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_TOBLOCK.getPath(), this.fdplayerHandler.getValueToBlock(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_ISCONSUMING.getPath(), this.fdplayerHandler.getValueIsConsuming(uuid));
     	this.playerDB.set(uuid + CONFIG.PLAYERDB_ISCAKE.getPath(), this.fdplayerHandler.getValueIsCake(uuid));
+    	
+    	List<String> foodtypes = this.foodtypeHandler.getListFoodtypes(); 
+    	for(String foodtype : foodtypes){
+    		this.playerDB.set(uuid + CONFIG.PLAYERDB_DIVERSITY.getPath() + foodtype, this.fdplayerHandler.getDiversityValue(uuid, foodtype));
+    	}
     	this.playerDB.save();
     	this.fdplayerHandler.removeFDPlayer(uuid);    	
     }

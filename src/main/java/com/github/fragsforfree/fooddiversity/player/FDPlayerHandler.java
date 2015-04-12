@@ -155,5 +155,40 @@ public class FDPlayerHandler {
 		}
 		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
 		return false;
-	}	
+	}
+	
+	public void addDiversityEntry(String uuid, String key, Integer value){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			fdplayer.addDiversityEntry(key, value);
+		}
+		else
+		{
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		}	
+	}
+	
+	public void removeDiversityEntry(String key){
+		for(FDPlayer fdplayer : fdplayers){
+			fdplayer.removeDiversityEntry(key);
+		}
+	}
+	
+	public String getDiversityString(String uuid){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			return fdplayer.getDiversityString();
+		}
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		return null;		
+	}
+	
+	public Integer getDiversityValue(String uuid, String key){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			return fdplayer.getDiversityValue(key);
+		}
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		return null;		
+	}
 }

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CONFIG {
-	PLUGIN_CONFIGVERSION("Plugin.Configversion", 1),
+	PLUGIN_CONFIGVERSION("Plugin.Configversion", 2),
 	PLUGIN_DEBUG("Plugin.Debug", false),
 	PLUGIN_PATH_DATA("//Data"),
 	CONFIG_ITEMSINROW_FRUIT("Config.ItemsInRow.Fruit", 3),
@@ -15,13 +15,16 @@ public enum CONFIG {
 	CONFIG_ITEMS_FRUIT("Config.Items.Fruit", Arrays.asList("APPLE", "MELON", "CARROT", "GOLDEN_APPLE", "GOLDEN_CARROT")),
 	CONFIG_ITEMS_SPEZIAL("Config.Items.Spezial", Arrays.asList("COOKIE", "CAKE", "BREAD", "POTATO", "BAKED_POTATO", "PUMPKIN_PIE", "MUSHROOM_SOUP", "POISONOUS_POTATO")),
 	CONFIG_MESSAGE_DIVERSITY("Config.Message.Diversity", "You need more variety in the food, try something other than %foodtype"),
+	CONFIG_FEATURE_ITEMINROW("Config.Feature.ItemInRow", true),
+	CONFIG_FEATURE_DIVERSITY("Config.Feature.Diversity", true),
 	PLAYERDB_EATENINROW(".eateninrow"),
 	PLAYERDB_LASTEATENTYPE(".lasteatentype"),
 	PLAYERDB_NAME(".name"),
 	PLAYERDB_FILE("", "Player.yml"),
 	PLAYERDB_TOBLOCK(".toblock", false),
 	PLAYERDB_ISCONSUMING(".isconsuming", false),
-	PLAYERDB_ISCAKE(".iscake", false);
+	PLAYERDB_ISCAKE(".iscake", false),
+	PLAYERDB_DIVERSITY(".diversity.");
 	
 	private String path;
 	private int intdef;	

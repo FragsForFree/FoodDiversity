@@ -17,6 +17,6 @@ public class PlayerQuit implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event){
 		String uuid = event.getPlayer().getUniqueId().toString();
-		plugin.PlayerQuid(uuid);
+		plugin.PlayerQuit(uuid);
 	}
 }
