@@ -28,19 +28,19 @@ public class FoodtypeHandler {
 	 */
 	public void addFoodtype(String _name, List<String> listOfFood, int _maxeateninrow) {
 		if (getfoodtype(_name) == null) {
-			MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, "Name des Foodtype: " + _name, PLUGIN.getDebug());
+			MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, "Name des Foodtype: " + _name, PLUGIN.getConfigurationDebugmode());
 			Foodtype _foodtype = new Foodtype(_name, _maxeateninrow);
 			for (String food: listOfFood)
 			{
 				try{
 					Material _material = Material.getMaterial(food);
-					MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", _material.name()), PLUGIN.getDebug());
+					MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", _material.name()), PLUGIN.getConfigurationDebugmode());
 					if (this.getfoodtypename(_material.name()) == null) {						
 						_foodtype.addfood(_material);
 					}
 					else
 					{
-						MessageHandler.sendConsoleDebug(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_COUNT.getMessage().replace("%material", _material.name()), PLUGIN.getDebug());
+						MessageHandler.sendConsoleDebug(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_COUNT.getMessage().replace("%material", _material.name()), PLUGIN.getConfigurationDebugmode());
 					}
 				} catch (Exception ex) {
 					MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_MAT.getMessage().replace("%material", food));

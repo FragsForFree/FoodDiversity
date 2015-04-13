@@ -18,6 +18,8 @@ public enum MESSAGE {
 	CLICKED_CAKE("The spezial Material cake was clicked!"),
 	ITEM_ISCAKE("The Item is a cake!"),
 	CMD_DEBUG_CHANGE("debug change to '%args'"),
+	CMD_FEATURE_ITEMINROW_CHANGE("feature iteminrow change to '%args'"),
+	CMD_FEATURE_DIVERSITY_CHANGE("feature diversity change to '%args'"),
 	CMD_FRUIT_CHANGE("fruit change to '%args'"),
 	CMD_MEAT_CHANGE("meat change to '%args'"),
 	CMD_SPEZIAL_CHANGE("spezial change to '%args'"),

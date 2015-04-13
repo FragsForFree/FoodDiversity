@@ -40,7 +40,7 @@ public class PlayerInteract implements Listener {
     public void onInteract(PlayerInteractEvent event){
     	if((event.getPlayer().getFoodLevel() < 20) && (event.getClickedBlock() != null)) {
 	    	if(Material.CAKE_BLOCK == event.getClickedBlock().getType()){
-				MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.CLICKED_CAKE.getMessage(), plugin.getDebug());   	
+				MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.CLICKED_CAKE.getMessage(), plugin.getConfigurationDebugmode());   	
 				
 				ItemStack item = new ItemStack(Material.CAKE);
 				plugin.checkFoodDiversity(event.getPlayer(), item);
@@ -58,7 +58,7 @@ public class PlayerInteract implements Listener {
 		        				
 		        				public void run(){	        						        					
 		        					world.getBlockAt(loc).setData((byte) (world.getBlockAt(loc).getData() -1));;
-		        					MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage(), plugin.getDebug());
+		        					MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage(), plugin.getConfigurationDebugmode());
 		        				}	        				
 		        				
 		        			}, 10L);

@@ -6,21 +6,49 @@ import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
 import com.github.fragsforfree.fooddiversity.enums.CONFIG;
 import com.github.fragsforfree.fooddiversity.enums.MESSAGE;
+import com.github.fragsforfree.fooddiversity.food.FoodtypeHandler;
 import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 
 public class ConfigurationManager {
 
-	private final Plugin PLUGIN;
-	private FoodDiversity cFooddiversity;
+	private final FoodDiversity PLUGIN;
+	private FoodtypeHandler foodtypeHandler;
+
+	private boolean debug;
+	private boolean featureItemInRow;
+	private boolean featureDiversity;	
 	
-	public ConfigurationManager(Plugin instance, FoodDiversity _fooddiversity) {
-		this.PLUGIN = instance;
-		this.cFooddiversity = _fooddiversity;
+	private void setDebug(boolean value){
+		this.debug = value;
+	}
+	
+    public boolean getDebug(){
+    	return this.debug;
+    }	
+	
+	private void setFeatureItemInRow(boolean value){
+		this.featureItemInRow = value;
+	}
+	
+	public boolean getFeatureItemInRow(){
+		return this.featureItemInRow;
+	}
+	
+	private void setFeatureDiversity(boolean value){
+		this.featureDiversity = value;
+	}
+	
+	public boolean getFeatureDiversity(){
+		return this.featureDiversity;
+	}	
+	
+	public ConfigurationManager(FoodDiversity plugin, FoodtypeHandler _foodtypeHandler) {
+		this.PLUGIN = plugin;
+		this.foodtypeHandler = _foodtypeHandler;
 		this.initialiseConfig();
 	}
 	
@@ -56,13 +84,18 @@ public class ConfigurationManager {
     		{
     			MessageHandler.sendConsole(PLUGIN, Level.WARNING, MESSAGE.INVALID_CONFIG_VERSION.getMessage());
     		}
-    	}    	
+    	}
+    	
+    	this.setDebug(CONFIG.PLUGIN_DEBUG.getBoolean());
+		this.setFeatureItemInRow(CONFIG.CONFIG_FEATURE_ITEMINROW.getBoolean());
+		this.setFeatureDiversity(CONFIG.CONFIG_FEATURE_DIVERSITY.getBoolean());
+		this.getFoodConfiguration();
     }
     
     /**
      *  get the foodtype-configuration and give each one to the foodtypehandler
      */
-    public void getFoodConfiguration() {
+    private void getFoodConfiguration() {
     	int itemInRow;
     	Set<String> keys = PLUGIN.getConfig().getKeys(true);
     	for (String key: keys){
@@ -78,21 +111,32 @@ public class ConfigurationManager {
     				itemInRow = 3;
     			}
     			List<String> listOfFood = PLUGIN.getConfig().getStringList(key);
-    			this.cFooddiversity.foodtypeHandler.addFoodtype(foodtype, listOfFood, itemInRow);    			
+    			this.foodtypeHandler.addFoodtype(foodtype, listOfFood, itemInRow);    			
     		}
     	} 	
     }
-    
-    public boolean getDebug(){
-    	return this.PLUGIN.getConfig().getBoolean(CONFIG.PLUGIN_DEBUG.getPath());
-    }
-    
+
     public void setDebug(CommandSender sender, boolean value){
     	this.PLUGIN.getConfig().set(CONFIG.PLUGIN_DEBUG.getPath(), value);    	
     	this.PLUGIN.saveConfig();
+    	this.setDebug(value);
     	MessageHandler.sendMessage(PLUGIN, sender, MESSAGE.CMD_DEBUG_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
     }
-	
+    
+    public void setFeatureItemInRow(CommandSender sender, boolean value){
+    	this.PLUGIN.getConfig().set(CONFIG.CONFIG_FEATURE_ITEMINROW.getPath(), value);
+    	this.PLUGIN.saveConfig();
+    	this.setFeatureItemInRow(value);
+    	MessageHandler.sendMessage(PLUGIN, sender, MESSAGE.CMD_FEATURE_ITEMINROW_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
+    }
+    
+    public void setFeatureDiversity(CommandSender sender, boolean value){
+    	this.PLUGIN.getConfig().set(CONFIG.CONFIG_FEATURE_DIVERSITY.getPath(), value);
+    	this.PLUGIN.saveConfig();
+    	this.setFeatureDiversity(value);
+    	MessageHandler.sendMessage(PLUGIN, sender, MESSAGE.CMD_FEATURE_DIVERSITY_CHANGE.getMessage().replace("%args", String.valueOf(value)), false);
+    }
+    
     public boolean addFoodtype(String foodtype, List<String> food, int itemInRow){
     	boolean result = false;
     	if(!this.PLUGIN.getConfig().contains("Config.Items." + foodtype) && 
@@ -148,5 +192,5 @@ public class ConfigurationManager {
 			this.PLUGIN.getConfig().set("Config.ItemsInRow." + foodtype, iteminrow);
 		return result;
 	}
-    
+	
 }

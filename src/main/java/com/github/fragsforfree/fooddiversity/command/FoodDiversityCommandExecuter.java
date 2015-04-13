@@ -82,8 +82,21 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    		}
 	    		
 	    		if(args[0].toLowerCase().equalsIgnoreCase("set")){
+	    			   				    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("iteminrow")){
 	    				this.plugin.setItemInRow(sender, args[2], args[3]);
+	    			}
+	    			
+	    			if(args[1].toLowerCase().equalsIgnoreCase("feature")){
+	    				
+	    				if(args[2].toLowerCase().equalsIgnoreCase("iteminrow")){
+	    					this.plugin.setConfigFeatureItemInRow(sender, args[3]);
+	    				}
+	    				
+	    				if(args[2].toLowerCase().equalsIgnoreCase("diversity")){
+	    					this.plugin.setConfigFeatureDiversity(sender, args[3]);
+	    				}
+	    				
 	    			}
 	    		}
 	    		
@@ -129,7 +142,9 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     	if (sender.hasPermission(EnumPermissions.FoodDiversityAdmin.getString()) || (sender instanceof ConsoleCommandSender)){	
 			sender.sendMessage(ChatColor.GREEN + EnumCommandhelp.TITLE.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Help.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Help.getTip());
-			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Debug.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Debug.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Debug.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Debug.getTip());			
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Feature_ItemInRow.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Feature_ItemInRow.getTip());
+			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Set_Feature_Diversity.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Set_Feature_Diversity.getTip());			
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Foodtypes.getTip());
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_List_Food.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_List_Food.getTip());						
 			sender.sendMessage(ChatColor.GOLD + EnumCommandhelp.Cmd_Add_Foodtypes.getCommand() + ChatColor.WHITE + EnumCommandhelp.Cmd_Add_Foodtypes.getTip());

@@ -2,7 +2,6 @@ package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -33,16 +32,19 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 
 	private PlayerDB playerDB;
 	private ConfigurationManager configManager;
-	public FoodtypeHandler foodtypeHandler;
+	private FoodtypeHandler foodtypeHandler;
 	private FDPlayerHandler fdplayerHandler;
-	private boolean debug;
 	
-	private void setDebug(boolean value){
-		this.debug = value;
+	public boolean getConfigurationDebugmode(){
+		return this.configManager.getDebug();
 	}
 	
-	public boolean getDebug(){
-		return this.debug;
+	public boolean getConfigurationFeatureItemInRow(){
+		return this.configManager.getFeatureItemInRow();
+	}
+	
+	public boolean getConfigurationFeatureDiversity(){
+		return this.configManager.getFeatureDiversity();
 	}
 	
 	/**
@@ -51,9 +53,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     public void onEnable(){ 
     	foodtypeHandler = new FoodtypeHandler(this);
     	fdplayerHandler = new FDPlayerHandler(this);
-    	configManager = new ConfigurationManager(this, this);
-    	this.getConfigDebug();
-    	configManager.getFoodConfiguration();
+    	configManager = new ConfigurationManager(this, this.foodtypeHandler);
     	initialisePlayerDB();
     	addMetrics();    	
     	
@@ -75,7 +75,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	    MetricsLite metrics = new MetricsLite(this);
     	    metrics.start();
     	} catch (IOException e) {
-        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.METRICS_FAILED.getMessage(), this.getDebug());
+        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.METRICS_FAILED.getMessage(), this.getConfigurationDebugmode());
     	}
     }
     
@@ -113,7 +113,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
      */
     private boolean isCake(ItemStack item){
     	if(Material.CAKE == item.getType()){
-        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.ITEM_ISCAKE.getMessage(), this.getDebug());
+        	MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.ITEM_ISCAKE.getMessage(), this.getConfigurationDebugmode());
     		return true;
     	}
     	return false;
@@ -139,7 +139,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	    		String eatentype = this.fdplayerHandler.getValueLasteatentype(uuid);
 	    		int eaten = this.fdplayerHandler.getValueEateninrow(uuid);		    	
 		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
-		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getDebug());    		
+		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getConfigurationDebugmode());    		
 		    		this.fdplayerHandler.setValueToblock(uuid, true);
 		    	} else {
 		    		if (type.equals(eatentype)){
@@ -150,32 +150,49 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		    		this.fdplayerHandler.setValueEateninrow(uuid, eaten);
 		    		this.fdplayerHandler.setValueLasteatentype(uuid, type);
 		    		this.fdplayerHandler.setValueToblock(uuid, false);
-		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getDebug());		    		
+		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getConfigurationDebugmode());		    		
 		    	}     		
 	    	} else {
 	    		this.fdplayerHandler.setValueToblock(uuid, false);
 	    	}
 	    	this.fdplayerHandler.setValueIsConsuming(uuid, true);
     	} else {
-    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name), this.getDebug()); 		
+    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.IS_IMMUN.getMessage().replace("%player", name), this.getConfigurationDebugmode()); 		
     	}
-    }   
-    
-    public void getConfigDebug(){
-    	this.setDebug(this.configManager.getDebug());
-    }
+    }       
     
     public void setConfigDebug(CommandSender sender, String value){
     	if ((value.toLowerCase().equalsIgnoreCase("true") || 
     			value.toLowerCase().equalsIgnoreCase("false"))){
     		this.configManager.setDebug(sender, Boolean.valueOf(value));
-    		this.setDebug(Boolean.valueOf(value));
     	}
     	else
     	{
         	MessageHandler.sendMessage(this, sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
     	}
     }
+
+    public void setConfigFeatureItemInRow(CommandSender sender, String value){
+    	if ((value.toLowerCase().equalsIgnoreCase("true") || 
+    			value.toLowerCase().equalsIgnoreCase("false"))){
+    		this.configManager.setFeatureItemInRow(sender, Boolean.valueOf(value));
+    	}
+    	else
+    	{
+        	MessageHandler.sendMessage(this, sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
+    	}
+    }    
+  
+    public void setConfigFeatureDiversity(CommandSender sender, String value){
+    	if ((value.toLowerCase().equalsIgnoreCase("true") || 
+    			value.toLowerCase().equalsIgnoreCase("false"))){
+    		this.configManager.setFeatureDiversity(sender, Boolean.valueOf(value));
+    	}
+    	else
+    	{
+        	MessageHandler.sendMessage(this, sender, MESSAGE.EXPECT_BOOLEAN.getMessage(), true);
+    	}
+    }     
     
     public void listFoodtypes(CommandSender sender){
     	String list = "";
@@ -309,7 +326,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	    	}    		
     	}    	
     	
-    	MessageHandler.sendConsoleDebug(this, Level.INFO, "Diversity: " + this.fdplayerHandler.getDiversityString(uuid), this.getDebug());
+    	MessageHandler.sendConsoleDebug(this, Level.INFO, "Diversity: " + this.fdplayerHandler.getDiversityString(uuid), this.getConfigurationDebugmode());
     }
     
     public void PlayerQuit(String uuid){

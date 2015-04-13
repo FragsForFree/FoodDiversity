@@ -24,7 +24,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' allready loaded!", plugin.getDebug());	
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' allready loaded!", plugin.getConfigurationDebugmode());	
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getName();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;		
 	}
 	
@@ -64,7 +64,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getLasteatentype();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;
 	}
 	
@@ -84,7 +84,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 
@@ -93,7 +93,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getEateninrow();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;
 	}	
 	
@@ -104,7 +104,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 
@@ -113,7 +113,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getToBlock();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return false;
 	}		
 	
@@ -124,7 +124,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 
@@ -133,7 +133,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getIsConsuming();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return false;
 	}		
 	
@@ -144,7 +144,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}
 	}
 	
@@ -153,7 +153,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getIsCake();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return false;
 	}
 	
@@ -164,7 +164,7 @@ public class FDPlayerHandler {
 		}
 		else
 		{
-			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+			MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		}	
 	}
 	
@@ -179,7 +179,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getDiversityString();
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;		
 	}
 	
@@ -188,7 +188,7 @@ public class FDPlayerHandler {
 		if (fdplayer != null){
 			return fdplayer.getDiversityValue(key);
 		}
-		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getDebug());
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;		
 	}
 }

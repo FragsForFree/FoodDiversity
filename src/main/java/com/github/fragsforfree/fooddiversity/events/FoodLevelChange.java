@@ -44,15 +44,15 @@ public class FoodLevelChange implements Listener {
 	    		
         		if(!this.fdplayerhandler.getValueIsCake(uuid)){
 		    		ItemStack item = player.getItemInHand();	    			    		
-	    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getDebug());  	
+	    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());  	
 		        	item.setAmount(item.getAmount() + 1);	        	
-		        	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT_NEW.getMessage().replace("%item",  item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getDebug());
+		        	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT_NEW.getMessage().replace("%item",  item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());
 		        	player.setItemInHand(item);    	
 		    		player.updateInventory();	    			
 	    		}	    			    		
         		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        		        	
 	    		event.setCancelled(true); 	    			    		
-	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getDebug());	        		
+	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getConfigurationDebugmode());	        		
         	}
         	this.fdplayerhandler.setValueIsConsuming(uuid, false);
     	}
