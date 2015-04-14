@@ -28,6 +28,7 @@ public class FoodLevelChange implements Listener {
      * workaround method: https://bukkit.atlassian.net/browse/BUKKIT-4169
      * FoodLevelChangeEvent from bukkit api
      * roleback the event actions if needed. 
+     * feature iteminrow
      * 
      * @param event
      */
@@ -35,27 +36,29 @@ public class FoodLevelChange implements Listener {
 	@EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {    	    	   		
     	if (event.getEntityType() == EntityType.PLAYER) {
-    		    		
     		Player player = (Player) event.getEntity();	        		        	
         	String uuid = player.getUniqueId().toString();
         	
-        	if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
-        		this.fdplayerhandler.setValueToblock(uuid, false);   		
-	    		
-        		if(!this.fdplayerhandler.getValueIsCake(uuid)){
-		    		ItemStack item = player.getItemInHand();	    			    		
-	    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());  	
-		        	item.setAmount(item.getAmount() + 1);	        	
-		        	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT_NEW.getMessage().replace("%item",  item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());
-		        	player.setItemInHand(item);    	
-		    		player.updateInventory();	    			
-	    		}	    			    		
-        		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        		        	
-	    		event.setCancelled(true); 	    			    		
-	    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getConfigurationDebugmode());	        		
+        	if (this.plugin.getConfigurationFeatureItemInRow()){
+	        	if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
+	        		this.fdplayerhandler.setValueToblock(uuid, false);   		
+		    		
+	        		if(!this.fdplayerhandler.getValueIsCake(uuid)){
+			    		ItemStack item = player.getItemInHand();	    			    		
+		    	    	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT.getMessage().replace("%item", item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());  	
+			        	item.setAmount(item.getAmount() + 1);	        	
+			        	MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.ITEM_AMOUNT_NEW.getMessage().replace("%item",  item.getType().toString()).replace("%value", String.valueOf(item.getAmount())), plugin.getConfigurationDebugmode());
+			        	player.setItemInHand(item);    	
+			    		player.updateInventory();	    			
+		    		}	    			    		
+	        		MessageHandler.sendPlayerMessage(player, (plugin.getConfig().getString(CONFIG.CONFIG_MESSAGE_DIVERSITY.getPath())).replace("%foodtype", this.fdplayerhandler.getValueLasteatentype(uuid)), plugin.getName(), true);	        		        	
+		    		event.setCancelled(true); 	    			    		
+		    		MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.BLOCK_INCREASE.getMessage().replace("%player", event.getEntity().getName()), plugin.getConfigurationDebugmode());	        		
+	        	}
         	}
         	this.fdplayerhandler.setValueIsConsuming(uuid, false);
     	}
+    	
     	
     }	
 	

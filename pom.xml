@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.fragsforfree</groupId>
   <artifactId>FoodDiversity</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.3-SNAPSHOT</version>
   <name>FoodDiversity</name>
 
   <description>This plugin stops the player from eating more than a configurable count of the same type of food in a row. The survival mode will get more depth. The players have to take care of a balanced diet. Say bye to the players who only eat rotting meat.</description>

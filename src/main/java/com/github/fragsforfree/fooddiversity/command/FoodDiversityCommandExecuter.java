@@ -2,6 +2,7 @@ package com.github.fragsforfree.fooddiversity.command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.fragsforfree.fooddiversity.FoodDiversity;
+import com.github.fragsforfree.fooddiversity.messages.MessageHandler;
 import com.github.fragsforfree.fooddiversity.permission.EnumPermissions;
 
 public class FoodDiversityCommandExecuter implements CommandExecutor {
@@ -38,6 +40,9 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
     				}
     				
     			}
+    			
+    			this.sendHelp(sender);
+    			return true;    			
     		
     		case 3:
     			
@@ -45,10 +50,12 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("foodtype")){
 	    				this.plugin.removeFoodtype(sender, args[2]);
+	    				return true;
 	    			}
 	    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("food")){
 	    				this.plugin.removeFood(sender, args[2]);
+	    				return true;
 	    			}
 	    		}
     			
@@ -78,6 +85,7 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    		if(args[0].toLowerCase().equalsIgnoreCase("add")){    				    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("food")){
 	    				this.plugin.addFood(sender, args[2], args[3]);
+	    				return true;
 	    			}
 	    		}
 	    		
@@ -85,31 +93,41 @@ public class FoodDiversityCommandExecuter implements CommandExecutor {
 	    			   				    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("iteminrow")){
 	    				this.plugin.setItemInRow(sender, args[2], args[3]);
+	    				return true;
 	    			}
 	    			
 	    			if(args[1].toLowerCase().equalsIgnoreCase("feature")){
 	    				
 	    				if(args[2].toLowerCase().equalsIgnoreCase("iteminrow")){
 	    					this.plugin.setConfigFeatureItemInRow(sender, args[3]);
+	    					return true;
 	    				}
 	    				
 	    				if(args[2].toLowerCase().equalsIgnoreCase("diversity")){
 	    					this.plugin.setConfigFeatureDiversity(sender, args[3]);
+	    					return true;
 	    				}
 	    				
 	    			}
 	    		}
+	    		
+    			this.sendHelp(sender);
+    			return true;	    		
 	    		
     		case 5:
     			
     			if(args[0].toLowerCase().equalsIgnoreCase("add")){     				
 	    			if(args[1].toLowerCase().equalsIgnoreCase("foodtype")){	    					    				
 	    				if(this.isInteger(args[3])){
-	    					List<String> list = Arrays.asList(args[4].split(";").toString().toUpperCase());
+	    					List<String> list = Arrays.asList(args[4].split(";"));
 	    					this.plugin.addFoodtype(sender, args[2], list,  Integer.valueOf(args[3]));
+	    					return true;
 	    				}    				
 	    			}	    			
 	    		}
+    			
+    			this.sendHelp(sender);
+    			return true;    			
 	    		
     			
 	    	default:	    			    		

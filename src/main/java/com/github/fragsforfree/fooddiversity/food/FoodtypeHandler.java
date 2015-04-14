@@ -33,7 +33,7 @@ public class FoodtypeHandler {
 			for (String food: listOfFood)
 			{
 				try{
-					Material _material = Material.getMaterial(food);
+					Material _material = Material.getMaterial(food.toUpperCase().trim());
 					MessageHandler.sendConsoleDebug(PLUGIN, Level.INFO, MESSAGE.CHECK_MAT.getMessage().replace("%material", _material.name()), PLUGIN.getConfigurationDebugmode());
 					if (this.getfoodtypename(_material.name()) == null) {						
 						_foodtype.addfood(_material);
@@ -134,9 +134,9 @@ public class FoodtypeHandler {
 		return _foodtype.getFoodList();		
 	}
 
-	public void removeFoodtype(String foodtype) {
+	public void removeFoodtype(String foodtypename) {
 		for (Foodtype _foodtype: Foodtypes){
-			if (_foodtype.getname().equalsIgnoreCase(foodtype)){ Foodtypes.remove(_foodtype);}
+			if (_foodtype.getname().equalsIgnoreCase(foodtypename)){ Foodtypes.remove(_foodtype);}
 		}
 		
 	}

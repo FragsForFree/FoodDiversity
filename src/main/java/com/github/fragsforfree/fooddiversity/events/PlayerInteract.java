@@ -46,27 +46,29 @@ public class PlayerInteract implements Listener {
 				plugin.checkFoodDiversity(event.getPlayer(), item);
 				
 				String uuid = event.getPlayer().getUniqueId().toString();				
-				if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
-	        		if (Action.RIGHT_CLICK_BLOCK == event.getAction()){
-		        		if (event.getClickedBlock().getData() > 0) {
-		        			event.getClickedBlock().setData((byte) (event.getClickedBlock().getData() -1)); //lose at least one damage, if the cake is full
-		        		} else {
-		        			loc = event.getClickedBlock().getLocation();
-		        			world = event.getClickedBlock().getWorld();
-		        			
-		        			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,  new Runnable() {
-		        				
-		        				public void run(){	        						        					
-		        					world.getBlockAt(loc).setData((byte) (world.getBlockAt(loc).getData() -1));;
-		        					MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage(), plugin.getConfigurationDebugmode());
-		        				}	        				
-		        				
-		        			}, 10L);
-	
-		        		}	        			
-	        		}
-	        		
-	        	}
+				
+				if (this.plugin.getConfigurationFeatureItemInRow()){
+					if(this.fdplayerhandler.getValueToBlock(uuid) && (this.fdplayerhandler.getValueIsConsuming(uuid))){
+		        		if (Action.RIGHT_CLICK_BLOCK == event.getAction()){
+			        		if (event.getClickedBlock().getData() > 0) {
+			        			event.getClickedBlock().setData((byte) (event.getClickedBlock().getData() -1)); //lose at least one damage, if the cake is full
+			        		} else {
+			        			loc = event.getClickedBlock().getLocation();
+			        			world = event.getClickedBlock().getWorld();
+			        			
+			        			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,  new Runnable() {
+			        				
+			        				public void run(){	        						        					
+			        					world.getBlockAt(loc).setData((byte) (world.getBlockAt(loc).getData() -1));;
+			        					MessageHandler.sendConsoleDebug(plugin, Level.INFO, MESSAGE.SCHEDULER_RUN.getMessage(), plugin.getConfigurationDebugmode());
+			        				}	        				
+			        				
+			        			}, 10L);
+		
+			        		}	        			
+		        		}		        		
+		        	}
+				}
 	    	}	    		
     	}	
     }	

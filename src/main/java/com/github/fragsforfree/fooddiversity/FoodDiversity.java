@@ -54,6 +54,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	foodtypeHandler = new FoodtypeHandler(this);
     	fdplayerHandler = new FDPlayerHandler(this);
     	configManager = new ConfigurationManager(this, this.foodtypeHandler);
+    	configManager.getFoodConfiguration();
     	initialisePlayerDB();
     	addMetrics();    	
     	
@@ -65,6 +66,10 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	pm.registerEvents(new PlayerQuit(this, this.playerDB, this.fdplayerHandler, this.foodtypeHandler), this);
         
         getCommand(this.getName().toLowerCase()).setExecutor(new FoodDiversityCommandExecuter(this));
+        
+        MessageHandler.sendConsole(this, Level.INFO, "Debugmodus: " + this.getConfigurationDebugmode());
+        MessageHandler.sendConsole(this, Level.INFO, "Feature ItemInRow: " + this.getConfigurationFeatureItemInRow());
+        MessageHandler.sendConsole(this, Level.INFO, "Feature Diversity: " + this.getConfigurationFeatureDiversity());
     }
 
     /**
@@ -133,25 +138,30 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     	if (!player.hasPermission(EnumPermissions.FoodDiversityImmun.getString())){    		    	
     		type = this.getFoodtype(item);	    	
 	 
-	    	if(type != null){
-		    	this.fdplayerHandler.setValueIsCake(uuid, this.isCake(item));
+	    	if(type != null){		    	
 
 	    		String eatentype = this.fdplayerHandler.getValueLasteatentype(uuid);
 	    		int eaten = this.fdplayerHandler.getValueEateninrow(uuid);		    	
-		    	if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
-		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getConfigurationDebugmode());    		
-		    		this.fdplayerHandler.setValueToblock(uuid, true);
+		    	
+	    		if (this.getConfigurationFeatureItemInRow()){
+		    		this.fdplayerHandler.setValueIsCake(uuid, this.isCake(item));
+	    			if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
+			    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_REACHED_LIMIT.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", eatentype), this.getConfigurationDebugmode());    		
+			    		this.fdplayerHandler.setValueToblock(uuid, true);
+			    	} else {
+			    		this.fdplayerHandler.setValueToblock(uuid, false);
+			    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getConfigurationDebugmode());		    		
+			    	}
+	    		}
+		    		
+	    		if (type.equals(eatentype)){
+		    		eaten = eaten + 1;
 		    	} else {
-		    		if (type.equals(eatentype)){
-		    			eaten = eaten + 1;		    			
-		    		} else {
-		    			eaten = 1;
-		    		}
-		    		this.fdplayerHandler.setValueEateninrow(uuid, eaten);
-		    		this.fdplayerHandler.setValueLasteatentype(uuid, type);
-		    		this.fdplayerHandler.setValueToblock(uuid, false);
-		    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getConfigurationDebugmode());		    		
-		    	}     		
+		    		eaten = 1;
+		    	}
+		    	this.fdplayerHandler.setValueEateninrow(uuid, eaten);
+		    	this.fdplayerHandler.setValueLasteatentype(uuid, type);
+		    		    		
 	    	} else {
 	    		this.fdplayerHandler.setValueToblock(uuid, false);
 	    	}
