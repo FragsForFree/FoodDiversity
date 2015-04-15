@@ -82,7 +82,7 @@ public class Foodtype {
 	}
 
 	public void removefood(Material _material) {
-		if (!this.isfoodfound(_material)) {
+		if (this.isfoodfound(_material)) {
 			this.food.remove(_material);
 		}		
 		

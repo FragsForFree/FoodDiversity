@@ -129,16 +129,16 @@ public class FoodtypeHandler {
 		return foodtypes;
 	}
 	
-	public String getListFood(String _name){
-		Foodtype _foodtype = this.getfoodtype(_name);
+	public String getListFood(String _foodtypename){
+		Foodtype _foodtype = this.getfoodtype(_foodtypename);
 		return _foodtype.getFoodList();		
 	}
 
 	public void removeFoodtype(String foodtypename) {
-		for (Foodtype _foodtype: Foodtypes){
-			if (_foodtype.getname().equalsIgnoreCase(foodtypename)){ Foodtypes.remove(_foodtype);}
+		Foodtype _foodtype = this.getfoodtype(foodtypename);
+		if (Foodtypes.contains(_foodtype)){
+			Foodtypes.remove(_foodtype);
 		}
-		
 	}
 
 	public void addFood(Material food, String foodtype) {
@@ -146,7 +146,7 @@ public class FoodtypeHandler {
 	}
 
 	public void removeFood(Material food, String foodtype) {
-		this.getfoodtype(foodtype).removefood(food);		
+		this.getfoodtype(foodtype).removefood(food);
 	}
 
 	public void setItemInRow(String foodtype, Integer _maxeateninrow) {

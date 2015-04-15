@@ -2,6 +2,7 @@ package com.github.fragsforfree.fooddiversity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -223,12 +224,29 @@ public class FoodDiversity extends JavaPlugin implements Listener {
     }
     
     public void addFoodtype(CommandSender sender, String foodtype, List<String> food, int itemInRow){
-    	if (this.configManager.addFoodtype(foodtype, food, itemInRow)){
-    		this.foodtypeHandler.addFoodtype(foodtype, food, itemInRow);
-    	}
-    	else
+    	List<String> checkedfood = new ArrayList<String>();
+    	for (String _foodname : food){
+    		if ((this.foodtypeHandler.getfoodtypename(_foodname) == null) && (this.checkValidMaterial(_foodname) == true)){
+    			checkedfood.add(_foodname);
+    			MessageHandler.sendMessage(this, sender, "foodtype '" + foodtype + "' was added!", false);
+    		} else
+    		{
+    			MessageHandler.sendMessage(this, sender, "Food '" + _foodname + "' already in a foodtypegrou or not a valid food,  ignore entry", true);
+    		}
+    	} 	
+    	
+    	if (!checkedfood.isEmpty()){
+    	
+	    	if (this.configManager.addFoodtype(foodtype, checkedfood, itemInRow)){
+	    		this.foodtypeHandler.addFoodtype(foodtype, checkedfood, itemInRow);
+	    	}
+	    	else
+	    	{
+		    	MessageHandler.sendMessage(this, sender, "failed to add foodtype (config)", true);    		
+	    	}
+    	} else
     	{
-	    	MessageHandler.sendMessage(this, sender, "failed to add foodtype (config)", true);    		
+    		MessageHandler.sendMessage(this, sender, "There is no food left, ignore foodtypeentry", true);
     	}
     }
 
@@ -236,6 +254,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		if (this.configManager.removeFoodtype(foodtype)){
 			this.foodtypeHandler.removeFoodtype(foodtype);
 			this.fdplayerHandler.removeDiversityEntry(foodtype);
+			MessageHandler.sendMessage(this, sender, "foodtype '" + foodtype + "' was removed!", false);
 		}
 		else
 		{
@@ -248,6 +267,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		if (this.checkValidMaterial(food) == true){
 			if (this.configManager.addFood(food, foodtype)){
 				this.foodtypeHandler.addFood(Material.getMaterial(food), foodtype);
+				MessageHandler.sendMessage(this, sender, "food '" + food + "' was added to foodtype '" + foodtype + "'", false);
 			}
 			else
 			{
@@ -272,6 +292,11 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		if (this.checkValidMaterial(food) == true && foodtype != null){
 			if (this.configManager.removeFood(food, foodtype)){
 				this.foodtypeHandler.removeFood(Material.getMaterial(food), foodtype);
+				MessageHandler.sendMessage(this, sender, "food '" + food + "' was removed from foodtype '" + foodtype + "'", false);
+				
+				if(this.foodtypeHandler.getListFood(foodtype).equalsIgnoreCase("")){
+					this.removeFoodtype(sender, foodtype);
+				}
 			}
 		}
 		else
@@ -285,6 +310,7 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 		if (this.isNumeric(iteminrow)){
 			if (this.configManager.setItemInRow(foodtype, Integer.valueOf(iteminrow))){
 				this.foodtypeHandler.setItemInRow(foodtype, Integer.valueOf(iteminrow));
+				MessageHandler.sendMessage(this, sender, "iteminrow value for foodtype '" + foodtype + "' set to '" + iteminrow + "'", false);
 			}
 			else
 			{
