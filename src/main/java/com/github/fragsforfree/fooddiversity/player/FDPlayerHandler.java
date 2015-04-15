@@ -191,4 +191,21 @@ public class FDPlayerHandler {
 		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
 		return null;		
 	}
+	
+	public void addDiversityValues(String uuid, String key, Integer addvalue, boolean addvalueonkey){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			fdplayer.addDiversityValues(key, addvalue, addvalueonkey);
+		}
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());		
+	}
+	
+	public double getDiversityaverage(String uuid){
+		FDPlayer fdplayer = getFDPlayer(uuid);
+		if (fdplayer != null){
+			return fdplayer.getDiversityaverage();
+		}
+		MessageHandler.sendConsoleDebug(plugin, Level.WARNING, "User with uuid '" + uuid + "' not loaded!", plugin.getConfigurationDebugmode());
+		return 0;
+	}
 }

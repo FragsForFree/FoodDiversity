@@ -85,5 +85,40 @@ public class FDPlayer {
 		this.name = _name;
 		this.diversityvalues = new HashMap<String, Integer>();
 	}
-		
+	
+	public void addDiversityValues(String key, Integer addvalue, boolean addvalueonkey){
+		Integer value;
+		for (Map.Entry<String, Integer> entry : this.diversityvalues.entrySet())
+		{
+		    if (entry.getKey().contains(key)){
+		    	if (addvalueonkey){
+		    		value = entry.getValue();
+		    		value = value + addvalue;
+		    		if (value >= 20){ value = 20; }
+		    		entry.setValue(value);
+		    	}
+		    }
+		    else
+		    {
+		    	if (!addvalueonkey){
+		    		value = entry.getValue();
+		    		value = value - addvalue;
+		    		if (value <= 0){ value = 0; }
+		    		entry.setValue(value);		    		
+		    	}
+		    }
+		}		
+	}
+	
+	public double getDiversityaverage(){
+		double value = 0;
+		Integer count = 0;
+		for (Map.Entry<String, Integer> entry : this.diversityvalues.entrySet())
+		{
+			value = value + entry.getValue();
+			count = count + 1;
+		}
+		return (value / count);
+	}
+	
 }

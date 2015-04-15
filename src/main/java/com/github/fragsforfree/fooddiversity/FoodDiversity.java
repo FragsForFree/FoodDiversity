@@ -144,6 +144,12 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 	    		String eatentype = this.fdplayerHandler.getValueLasteatentype(uuid);
 	    		int eaten = this.fdplayerHandler.getValueEateninrow(uuid);		    	
 		    	
+	    		if (type.equals(eatentype)){
+		    		eaten = eaten + 1;
+		    	} else {
+		    		eaten = 1;
+		    	}	    		
+	    		
 	    		if (this.getConfigurationFeatureItemInRow()){
 		    		this.fdplayerHandler.setValueIsCake(uuid, this.isCake(item));
 	    			if(eaten >= this.foodtypeHandler.getmaxeateninrowfromfoodtype(type) && type.equals(eatentype)){    		
@@ -153,18 +159,26 @@ public class FoodDiversity extends JavaPlugin implements Listener {
 			    		this.fdplayerHandler.setValueToblock(uuid, false);
 			    		MessageHandler.sendConsoleDebug(this, Level.INFO, MESSAGE.HAS_EATEN.getMessage().replace("%player",  name).replace("%value", String.valueOf(eaten)).replace("%type", type), this.getConfigurationDebugmode());		    		
 			    	}
+	    		}		    		
+	    		
+	    		if (this.getConfigurationFeatureDiversity()){
+	    			if (eaten >= 3){
+	    				this.fdplayerHandler.addDiversityValues(uuid, type, 1, false);
+	    			} else {
+	    				this.fdplayerHandler.addDiversityValues(uuid, type, 1, true);
+	    			}	    			
+			    	if (this.getConfigurationDebugmode()){
+			    		//MessageHandler.sendPlayerMessage(player, "Diversity: " + this.fdplayerHandler.getDiversityString(uuid), this.getName(), false);
+			    		MessageHandler.sendPlayerMessage(player, "Diversityaverage: " + String.format("%.2f", this.fdplayerHandler.getDiversityaverage(uuid)), this.getName(), false);
+			    	}
 	    		}
-		    		
-	    		if (type.equals(eatentype)){
-		    		eaten = eaten + 1;
-		    	} else {
-		    		eaten = 1;
-		    	}
+	    		
 		    	this.fdplayerHandler.setValueEateninrow(uuid, eaten);
-		    	this.fdplayerHandler.setValueLasteatentype(uuid, type);
+		    	this.fdplayerHandler.setValueLasteatentype(uuid, type);		    	
 		    		    		
 	    	} else {
 	    		this.fdplayerHandler.setValueToblock(uuid, false);
+	    		MessageHandler.sendConsole(this, Level.WARNING, "Food found, which is not in a foodtypegroup: '" + item.getType().toString() + "'");
 	    	}
 	    	this.fdplayerHandler.setValueIsConsuming(uuid, true);
     	} else {
